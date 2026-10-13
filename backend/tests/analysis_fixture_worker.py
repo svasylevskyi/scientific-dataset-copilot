@@ -27,9 +27,12 @@ def transport(request):
 
 if __name__ == "__main__":
     if "--request" in sys.argv:
-        with httpx.Client(transport=httpx.MockTransport(transport)) as client:
+        client = httpx.Client(transport=httpx.MockTransport(transport))
+        try:
             with patch("app.sst.cli.httpx.Client", return_value=client):
                 pipeline.main()
+        finally:
+            client.close()
     else:
         execute = worker.execute
         with patch.object(
