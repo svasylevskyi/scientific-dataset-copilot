@@ -1,4 +1,4 @@
-FROM node:24-slim
+FROM node:26.6.0-slim
 WORKDIR /app
 COPY frontend/package*.json ./
 RUN npm ci

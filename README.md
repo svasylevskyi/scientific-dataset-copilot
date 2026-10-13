@@ -20,15 +20,47 @@ charges. The explicitly invoked CLI is the only live data retrieval entry point.
 
 ## Local setup
 
-Prerequisites: Python 3.12 and Node.js 22.12+ (Node 24 is used in CI).
+Development runtimes: **Python 3.14.7 and Node.js 26.6.0**, recorded in
+`.python-version` and `.node-version`. CI reads these files and runs the backend,
+frontend, and browser checks on both Linux and Windows. Docker uses the same
+versions; update its base images when changing the version files. Package metadata
+keeps its existing compatibility floors, but these are the actively tested runtimes.
 No API keys, paid services, database, or Stripe setup are needed for this increment.
 
-From the repository root:
+Run the following commands from the cloned repository folder. On Windows, do not
+use `C:\Windows\System32` as your project directory.
+
+### Windows PowerShell
+
+Confirm `python --version` reports 3.14.7 and `node --version` reports v26.6.0.
+Create a virtual environment and start the API:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe --version
+.\.venv\Scripts\python.exe -m pip install -r backend/requirements.lock
+.\.venv\Scripts\python.exe -m pip install --no-deps --no-build-isolation -e ./backend
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+If `.venv` was created with another Python version, stop processes using it and
+recreate that environment with Python 3.14.7 before installing dependencies.
+Calling its interpreter directly avoids needing PowerShell script activation.
+
+In a second PowerShell window, also in the repository folder:
+
+```powershell
+npm.cmd --prefix frontend ci
+npm.cmd --prefix frontend run dev
+```
+
+### Linux / macOS
+
+With the documented Python and Node.js versions selected, from the repository root:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-# Windows PowerShell: .venv\Scripts\Activate.ps1
 python -m pip install -r backend/requirements.lock
 python -m pip install --no-deps --no-build-isolation -e ./backend
 python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
@@ -46,7 +78,9 @@ Open <http://localhost:5173>. API documentation: <http://localhost:8000/docs>.
 Vite proxies `/api` to the local API; there is no cross-origin token setup.
 `API_PROXY_TARGET` can change the development proxy target.
 
-Alternatively, with Docker Compose:
+### Docker Compose
+
+Alternatively, with Docker running (Linux containers on Windows):
 
 ```bash
 docker compose up --build
@@ -54,6 +88,7 @@ docker compose up --build
 
 Both published ports bind to loopback. This Compose file runs the development
 preview; do not expose it publicly as a paid service.
+Stop the app with Ctrl+C, then run `docker compose down` to remove its containers.
 
 ## Run a live reference analysis
 
@@ -93,6 +128,12 @@ cd frontend
 npx playwright install chromium
 npm run test:e2e
 ```
+
+The verification commands above assume the virtual environment is activated.
+In PowerShell, Python-only checks can instead use `.\.venv\Scripts\python.exe`
+in place of `python`; use `npm.cmd` / `npx.cmd` for Node.js commands. For browser
+checks, ensure that the virtual environment's `Scripts` directory is on `PATH`,
+because Playwright launches the API using `python`.
 
 Normal tests use synthetic analytic cases and the checked-in NOAA snapshot; they
 do not access NOAA, an AI provider, or Stripe. CI checks generated API contract
