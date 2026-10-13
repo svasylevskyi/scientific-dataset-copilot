@@ -43,6 +43,88 @@
         "title": "AccountView",
         "type": "object"
       },
+      "AdminPlanView": {
+        "additionalProperties": false,
+        "properties": {
+          "active": {
+            "default": true,
+            "title": "Active",
+            "type": "boolean"
+          },
+          "billing": {
+            "const": "free",
+            "default": "free",
+            "title": "Billing",
+            "type": "string"
+          },
+          "concurrent_analyses": {
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Concurrent Analyses",
+            "type": "integer"
+          },
+          "description": {
+            "default": "",
+            "maxLength": 500,
+            "title": "Description",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_default": {
+            "title": "Is Default",
+            "type": "boolean"
+          },
+          "max_date_range_days": {
+            "maximum": 3663.0,
+            "minimum": 1.0,
+            "title": "Max Date Range Days",
+            "type": "integer"
+          },
+          "monthly_analyses": {
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Monthly Analyses",
+            "type": "integer"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "retention_days": {
+            "maximum": 3650.0,
+            "minimum": 1.0,
+            "title": "Retention Days",
+            "type": "integer"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "workspace_count": {
+            "title": "Workspace Count",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "monthly_analyses",
+          "concurrent_analyses",
+          "max_date_range_days",
+          "retention_days",
+          "id",
+          "version",
+          "is_default",
+          "workspace_count"
+        ],
+        "title": "AdminPlanView",
+        "type": "object"
+      },
       "AdminSummary": {
         "properties": {
           "users": {
@@ -212,6 +294,36 @@
           "warnings"
         ],
         "title": "AnalysisResult",
+        "type": "object"
+      },
+      "AssignmentInput": {
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "plan_id": {
+            "format": "uuid",
+            "title": "Plan Id",
+            "type": "string"
+          },
+          "status": {
+            "default": "active",
+            "enum": [
+              "active",
+              "suspended"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "plan_id"
+        ],
+        "title": "AssignmentInput",
         "type": "object"
       },
       "Bounds": {
@@ -409,6 +521,214 @@
           "password"
         ],
         "title": "PasswordInput",
+        "type": "object"
+      },
+      "PlanInput": {
+        "additionalProperties": false,
+        "properties": {
+          "active": {
+            "default": true,
+            "title": "Active",
+            "type": "boolean"
+          },
+          "concurrent_analyses": {
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Concurrent Analyses",
+            "type": "integer"
+          },
+          "description": {
+            "default": "",
+            "maxLength": 500,
+            "title": "Description",
+            "type": "string"
+          },
+          "max_date_range_days": {
+            "maximum": 3663.0,
+            "minimum": 1.0,
+            "title": "Max Date Range Days",
+            "type": "integer"
+          },
+          "monthly_analyses": {
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Monthly Analyses",
+            "type": "integer"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "retention_days": {
+            "maximum": 3650.0,
+            "minimum": 1.0,
+            "title": "Retention Days",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "monthly_analyses",
+          "concurrent_analyses",
+          "max_date_range_days",
+          "retention_days"
+        ],
+        "title": "PlanInput",
+        "type": "object"
+      },
+      "PlanUpdate": {
+        "additionalProperties": false,
+        "properties": {
+          "active": {
+            "default": true,
+            "title": "Active",
+            "type": "boolean"
+          },
+          "concurrent_analyses": {
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Concurrent Analyses",
+            "type": "integer"
+          },
+          "description": {
+            "default": "",
+            "maxLength": 500,
+            "title": "Description",
+            "type": "string"
+          },
+          "max_date_range_days": {
+            "maximum": 3663.0,
+            "minimum": 1.0,
+            "title": "Max Date Range Days",
+            "type": "integer"
+          },
+          "monthly_analyses": {
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Monthly Analyses",
+            "type": "integer"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "retention_days": {
+            "maximum": 3650.0,
+            "minimum": 1.0,
+            "title": "Retention Days",
+            "type": "integer"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "monthly_analyses",
+          "concurrent_analyses",
+          "max_date_range_days",
+          "retention_days",
+          "version"
+        ],
+        "title": "PlanUpdate",
+        "type": "object"
+      },
+      "PlanVersion": {
+        "additionalProperties": false,
+        "properties": {
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "PlanVersion",
+        "type": "object"
+      },
+      "PlanView": {
+        "additionalProperties": false,
+        "properties": {
+          "active": {
+            "default": true,
+            "title": "Active",
+            "type": "boolean"
+          },
+          "billing": {
+            "const": "free",
+            "default": "free",
+            "title": "Billing",
+            "type": "string"
+          },
+          "concurrent_analyses": {
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Concurrent Analyses",
+            "type": "integer"
+          },
+          "description": {
+            "default": "",
+            "maxLength": 500,
+            "title": "Description",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_default": {
+            "title": "Is Default",
+            "type": "boolean"
+          },
+          "max_date_range_days": {
+            "maximum": 3663.0,
+            "minimum": 1.0,
+            "title": "Max Date Range Days",
+            "type": "integer"
+          },
+          "monthly_analyses": {
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Monthly Analyses",
+            "type": "integer"
+          },
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "retention_days": {
+            "maximum": 3650.0,
+            "minimum": 1.0,
+            "title": "Retention Days",
+            "type": "integer"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "monthly_analyses",
+          "concurrent_analyses",
+          "max_date_range_days",
+          "retention_days",
+          "id",
+          "version",
+          "is_default"
+        ],
+        "title": "PlanView",
         "type": "object"
       },
       "ProfileInput": {
@@ -757,6 +1077,155 @@
         "title": "TokenInput",
         "type": "object"
       },
+      "UsageRecord": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "period_start": {
+            "format": "date",
+            "title": "Period Start",
+            "type": "string"
+          },
+          "release_reason": {
+            "anyOf": [
+              {
+                "enum": [
+                  "failed",
+                  "cancelled"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Release Reason"
+          },
+          "status": {
+            "enum": [
+              "reserved",
+              "consumed",
+              "released"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "period_start",
+          "created_at",
+          "finished_at",
+          "release_reason"
+        ],
+        "title": "UsageRecord",
+        "type": "object"
+      },
+      "UsageView": {
+        "properties": {
+          "blocked_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocked Reason"
+          },
+          "can_reserve": {
+            "title": "Can Reserve",
+            "type": "boolean"
+          },
+          "concurrent_reserved": {
+            "title": "Concurrent Reserved",
+            "type": "integer"
+          },
+          "consumed": {
+            "title": "Consumed",
+            "type": "integer"
+          },
+          "live_execution_available": {
+            "const": false,
+            "default": false,
+            "title": "Live Execution Available",
+            "type": "boolean"
+          },
+          "period_end": {
+            "format": "date",
+            "title": "Period End",
+            "type": "string"
+          },
+          "period_start": {
+            "format": "date",
+            "title": "Period Start",
+            "type": "string"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/PlanView"
+          },
+          "recent": {
+            "items": {
+              "$ref": "#/components/schemas/UsageRecord"
+            },
+            "title": "Recent",
+            "type": "array"
+          },
+          "remaining": {
+            "title": "Remaining",
+            "type": "integer"
+          },
+          "reserved": {
+            "title": "Reserved",
+            "type": "integer"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "suspended"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan",
+          "status",
+          "period_start",
+          "period_end",
+          "consumed",
+          "reserved",
+          "remaining",
+          "concurrent_reserved",
+          "can_reserve",
+          "blocked_reason",
+          "recent"
+        ],
+        "title": "UsageView",
+        "type": "object"
+      },
       "ValidationError": {
         "properties": {
           "ctx": {
@@ -1039,6 +1508,238 @@
         "summary": "Revoke Session",
         "tags": [
           "Accounts"
+        ]
+      }
+    },
+    "/api/v1/account/usage": {
+      "get": {
+        "operationId": "account_usage_api_v1_account_usage_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Account Usage",
+        "tags": [
+          "Plans"
+        ]
+      }
+    },
+    "/api/v1/admin/plan-assignments": {
+      "post": {
+        "operationId": "assign_plan_api_v1_admin_plan_assignments_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssignmentInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Assign Plan",
+        "tags": [
+          "Plans"
+        ]
+      }
+    },
+    "/api/v1/admin/plans": {
+      "get": {
+        "operationId": "list_plans_api_v1_admin_plans_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AdminPlanView"
+                  },
+                  "title": "Response List Plans Api V1 Admin Plans Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Plans",
+        "tags": [
+          "Plans"
+        ]
+      },
+      "post": {
+        "operationId": "create_plan_api_v1_admin_plans_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Plan",
+        "tags": [
+          "Plans"
+        ]
+      }
+    },
+    "/api/v1/admin/plans/{plan_id}": {
+      "patch": {
+        "operationId": "update_plan_api_v1_admin_plans__plan_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Plan Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Plan",
+        "tags": [
+          "Plans"
+        ]
+      }
+    },
+    "/api/v1/admin/plans/{plan_id}/default": {
+      "post": {
+        "operationId": "default_plan_api_v1_admin_plans__plan_id__default_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "plan_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Plan Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanVersion"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Default Plan",
+        "tags": [
+          "Plans"
         ]
       }
     },

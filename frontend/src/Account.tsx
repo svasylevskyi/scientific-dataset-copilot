@@ -189,6 +189,7 @@ function AdminPanel() {
   useEffect(() => { request<AdminSummary>('admin/summary').then(setData).catch(e => setError(errorText(e))); }, []);
   return <Paper className="panel"><Typography variant="h6" component="h2">Account administration</Typography>
     {error ? <Alert severity="error">{error}</Alert> : data ? <Typography sx={{ mt: 1 }}>{data.users} accounts · {data.verified_users} verified · {data.workspaces} personal workspaces</Typography> : <CircularProgress size={24} />}
+    <Button href="#/admin/plans" sx={{ mt: 2 }}>Manage plans</Button>
   </Paper>;
 }
 

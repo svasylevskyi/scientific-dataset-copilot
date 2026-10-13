@@ -106,6 +106,92 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/account/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Account Usage */
+        get: operations["account_usage_api_v1_account_usage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/plan-assignments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Assign Plan */
+        post: operations["assign_plan_api_v1_admin_plan_assignments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Plans */
+        get: operations["list_plans_api_v1_admin_plans_get"];
+        put?: never;
+        /** Create Plan */
+        post: operations["create_plan_api_v1_admin_plans_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/plans/{plan_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Plan */
+        patch: operations["update_plan_api_v1_admin_plans__plan_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/admin/plans/{plan_id}/default": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Default Plan */
+        post: operations["default_plan_api_v1_admin_plans__plan_id__default_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/summary": {
         parameters: {
             query?: never;
@@ -453,6 +539,46 @@ export interface components {
             verified: boolean;
             workspace: components["schemas"]["WorkspaceView"];
         };
+        /** AdminPlanView */
+        AdminPlanView: {
+            /**
+             * Active
+             * @default true
+             */
+            active: boolean;
+            /**
+             * Billing
+             * @default free
+             * @constant
+             */
+            billing: "free";
+            /** Concurrent Analyses */
+            concurrent_analyses: number;
+            /**
+             * Description
+             * @default
+             */
+            description: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Default */
+            is_default: boolean;
+            /** Max Date Range Days */
+            max_date_range_days: number;
+            /** Monthly Analyses */
+            monthly_analyses: number;
+            /** Name */
+            name: string;
+            /** Retention Days */
+            retention_days: number;
+            /** Version */
+            version: number;
+            /** Workspace Count */
+            workspace_count: number;
+        };
         /** AdminSummary */
         AdminSummary: {
             /** Users */
@@ -540,6 +666,25 @@ export interface components {
             /** Warnings */
             warnings: string[];
         };
+        /** AssignmentInput */
+        AssignmentInput: {
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
+            /**
+             * Plan Id
+             * Format: uuid
+             */
+            plan_id: string;
+            /**
+             * Status
+             * @default active
+             * @enum {string}
+             */
+            status: "active" | "suspended";
+        };
         /** Bounds */
         Bounds: {
             /** East */
@@ -615,6 +760,97 @@ export interface components {
             current_password: string;
             /** Password */
             password: string;
+        };
+        /** PlanInput */
+        PlanInput: {
+            /**
+             * Active
+             * @default true
+             */
+            active: boolean;
+            /** Concurrent Analyses */
+            concurrent_analyses: number;
+            /**
+             * Description
+             * @default
+             */
+            description: string;
+            /** Max Date Range Days */
+            max_date_range_days: number;
+            /** Monthly Analyses */
+            monthly_analyses: number;
+            /** Name */
+            name: string;
+            /** Retention Days */
+            retention_days: number;
+        };
+        /** PlanUpdate */
+        PlanUpdate: {
+            /**
+             * Active
+             * @default true
+             */
+            active: boolean;
+            /** Concurrent Analyses */
+            concurrent_analyses: number;
+            /**
+             * Description
+             * @default
+             */
+            description: string;
+            /** Max Date Range Days */
+            max_date_range_days: number;
+            /** Monthly Analyses */
+            monthly_analyses: number;
+            /** Name */
+            name: string;
+            /** Retention Days */
+            retention_days: number;
+            /** Version */
+            version: number;
+        };
+        /** PlanVersion */
+        PlanVersion: {
+            /** Version */
+            version: number;
+        };
+        /** PlanView */
+        PlanView: {
+            /**
+             * Active
+             * @default true
+             */
+            active: boolean;
+            /**
+             * Billing
+             * @default free
+             * @constant
+             */
+            billing: "free";
+            /** Concurrent Analyses */
+            concurrent_analyses: number;
+            /**
+             * Description
+             * @default
+             */
+            description: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Is Default */
+            is_default: boolean;
+            /** Max Date Range Days */
+            max_date_range_days: number;
+            /** Monthly Analyses */
+            monthly_analyses: number;
+            /** Name */
+            name: string;
+            /** Retention Days */
+            retention_days: number;
+            /** Version */
+            version: number;
         };
         /** ProfileInput */
         ProfileInput: {
@@ -761,6 +997,72 @@ export interface components {
         TokenInput: {
             /** Token */
             token: string;
+        };
+        /** UsageRecord */
+        UsageRecord: {
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Finished At */
+            finished_at: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Period Start
+             * Format: date
+             */
+            period_start: string;
+            /** Release Reason */
+            release_reason: ("failed" | "cancelled") | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "reserved" | "consumed" | "released";
+        };
+        /** UsageView */
+        UsageView: {
+            /** Blocked Reason */
+            blocked_reason: string | null;
+            /** Can Reserve */
+            can_reserve: boolean;
+            /** Concurrent Reserved */
+            concurrent_reserved: number;
+            /** Consumed */
+            consumed: number;
+            /**
+             * Live Execution Available
+             * @default false
+             * @constant
+             */
+            live_execution_available: false;
+            /**
+             * Period End
+             * Format: date
+             */
+            period_end: string;
+            /**
+             * Period Start
+             * Format: date
+             */
+            period_start: string;
+            plan: components["schemas"]["PlanView"];
+            /** Recent */
+            recent: components["schemas"]["UsageRecord"][];
+            /** Remaining */
+            remaining: number;
+            /** Reserved */
+            reserved: number;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "active" | "suspended";
         };
         /** ValidationError */
         ValidationError: {
@@ -956,6 +1258,182 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Message"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    account_usage_api_v1_account_usage_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsageView"];
+                };
+            };
+        };
+    };
+    assign_plan_api_v1_admin_plan_assignments_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssignmentInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Message"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_plans_api_v1_admin_plans_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminPlanView"][];
+                };
+            };
+        };
+    };
+    create_plan_api_v1_admin_plans_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlanInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_plan_api_v1_admin_plans__plan_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlanUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    default_plan_api_v1_admin_plans__plan_id__default_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                plan_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlanVersion"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanView"];
                 };
             };
             /** @description Validation Error */

@@ -145,7 +145,7 @@ jobs:
         timeout-minutes: 3
         run: |
           python -m alembic -c backend/alembic.ini upgrade head
-          python -m pytest backend/tests/test_accounts.py -q
+          python -m pytest backend/tests -q -m postgres
           python -m alembic -c backend/alembic.ini check
       - name: Install browser system dependencies
         timeout-minutes: 4
@@ -164,7 +164,7 @@ jobs:
         working-directory: frontend
         env:
           PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/sdc-playwright
-        run: npm run test:e2e -- accounts.spec.ts
+        run: npm run test:e2e -- accounts.spec.ts plans.spec.ts
       - name: Upload account browser evidence
         if: always()
         uses: actions/upload-artifact@v4

@@ -64,6 +64,15 @@ footer { font-size: 11px; color: #6c7e7c; padding: 12px 0 4px; }
 .auth-screen { max-width: 540px; margin: 12px auto; }
 .account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .account-nav { margin-top: 20px; }
+.account-nav { display: flex; flex-direction: column; align-items: flex-start; }
+.plan-grid, .plan-limit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.plan-grid .panel { min-width: 0; overflow-wrap: anywhere; }
+.usage-stats .stat strong { overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .account-nav { flex-direction: row; flex-wrap: wrap; }
+  .plan-grid, .plan-limit-grid { grid-template-columns: 1fr; }
+  .usage-stats { grid-template-columns: 1fr; }
+}
 .session-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; }
 @media (max-width: 1050px) { .account-grid { grid-template-columns: 1fr; gap: 0; } }
 @media (max-width: 760px) { .account-nav { margin-top: 8px; } .session-row { flex-wrap: wrap; } }
