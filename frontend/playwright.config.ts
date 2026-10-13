@@ -2,6 +2,9 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
+  globalTimeout: process.env.CI ? 120_000 : undefined,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: process.env.CI ? 'list' : undefined,
   use: { baseURL: 'http://127.0.0.1:5173', trace: 'retain-on-failure' },
   webServer: [
     {

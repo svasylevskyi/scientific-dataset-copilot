@@ -140,6 +140,12 @@ do not access NOAA, an AI provider, or Stripe. CI checks generated API contract
 drift and the same backend/build/browser checks. Python dependencies are pinned
 in `backend/requirements.lock`; JavaScript dependencies in `frontend/package-lock.json`.
 
+CI reports browser system dependencies, browser download, and test execution as
+separate steps. It downloads only Chromium's headless shell, bounds installation
+steps to 3–4 minutes, and gives the test suite 2 minutes to finish and report errors
+before the 3-minute test-step limit. Download diagnostics and per-test progress
+remain visible in the job log. Desktop and mobile coverage is unchanged.
+
 ## Project layout
 
 | Path | Purpose |

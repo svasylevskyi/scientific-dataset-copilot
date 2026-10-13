@@ -20,6 +20,8 @@ jobs:
     defaults:
       run:
         shell: bash
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/sdc-playwright
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -51,11 +53,22 @@ jobs:
           npm --prefix frontend run api:types
           git diff --exit-code -- backend/openapi.json frontend/src/api.generated.ts
           npm --prefix frontend run build
+      - name: Install browser system dependencies
+        if: runner.os == 'Linux'
+        timeout-minutes: 3
+        working-directory: frontend
+        run: node node_modules/playwright/cli.js install-deps chromium
+      - name: Install Chromium headless shell
+        timeout-minutes: 4
+        working-directory: frontend
+        env:
+          PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT: '30000'
+          DEBUG: pw:install
+        run: node node_modules/playwright/cli.js install --only-shell chromium
       - name: Browser checks
-        run: |
-          cd frontend
-          npx playwright install --with-deps chromium
-          npm run test:e2e
+        timeout-minutes: 3
+        working-directory: frontend
+        run: npm run test:e2e
       - name: Upload browser failure evidence
         if: failure()
         uses: actions/upload-artifact@v4
