@@ -1,16 +1,42 @@
-"""Local, network-free preview API. Account-backed execution follows in a later increment."""
+"""Public scientific preview plus persistent, isolated user accounts."""
 
 import json
 from importlib.resources import files
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import Response
+from fastapi.responses import JSONResponse, Response
+from sqlalchemy import select
+from sqlalchemy.exc import OperationalError
 
+from app.accounts.models import User
+from app.accounts.routes import Db
+from app.accounts.routes import router as accounts_router
 from app.sst.contracts import REGIONS, AnalysisRequest, AnalysisResult, QueryPlan
 from app.sst.erddap import SourceError, plan_query
 from app.sst.processing import monthly_csv
 
-app = FastAPI(title="Scientific Dataset Copilot", version="0.1.0")
+app = FastAPI(title="Scientific Dataset Copilot", version="0.2.0")
+app.include_router(accounts_router)
+
+
+@app.exception_handler(OperationalError)
+async def database_unavailable(request, exc):
+    return JSONResponse(
+        status_code=503,
+        content={"detail": "Account storage is unavailable. Please try again shortly."},
+    )
+
+
+@app.middleware("http")
+async def account_headers(request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith(
+        ("/api/v1/auth", "/api/v1/account", "/api/v1/workspaces", "/api/v1/admin")
+    ):
+        response.headers["Cache-Control"] = "no-store"
+    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
 
 
 def reference() -> AnalysisResult:
@@ -21,6 +47,12 @@ def reference() -> AnalysisResult:
 @app.get("/api/v1/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "mode": "local-reference-preview"}
+
+
+@app.get("/api/v1/ready")
+def ready(db: Db):
+    db.execute(select(User.id).limit(1))
+    return {"status": "ready"}
 
 
 @app.get("/api/v1/catalog")
@@ -35,7 +67,7 @@ def catalog():
             "reference_chart": True,
             "live_web_execution": False,
             "natural_language": False,
-            "accounts": False,
+            "accounts": True,
             "subscriptions": False,
         },
     }

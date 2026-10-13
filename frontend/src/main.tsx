@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import { request, type Analysis, type AnalysisRequest, type QueryPlan } from './api';
 import './style.css';
+import { AccountProvider, AccountScreen, AuthScreen, AccountNotice, useAccount, useRoute } from './Account';
 
 const Chart = lazy(() => import('./Chart'));
 const theme = createTheme({
@@ -82,7 +83,10 @@ function Reference({ analysis }: { analysis: Analysis }) {
 }
 
 function App() {
-  const [page, setPage] = useState<'reference' | 'planner'>('reference');
+  const { page, hash } = useRoute();
+  const { user } = useAccount();
+  const setPage = (page: string) => { window.location.hash = '/' + page; };
+  const accountPages = ['signin', 'signup', 'forgot', 'resend', 'verify', 'reset', 'email'];
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [error, setError] = useState('');
   const [attempt, setAttempt] = useState(0);
@@ -101,16 +105,18 @@ function App() {
         <button className={page === 'reference' ? 'active' : ''} onClick={() => setPage('reference')} aria-current={page === 'reference' ? 'page' : undefined}>Reference analysis</button>
         <button className={page === 'planner' ? 'active' : ''} onClick={() => setPage('planner')} aria-current={page === 'planner' ? 'page' : undefined}>Query planner</button>
       </nav>
+      <div className="account-nav"><Button href="#/account" sx={{ color: "#cee2dc" }}>{user ? "Your account" : "Account"}</Button></div>
       <div className="sidebar-note"><span className="status-dot" />Development preview<p>Open data.<br />Visible methods.<br />Reproducible results.</p></div>
     </aside>
-    <div className="workspace"><header><span>Explore with evidence</span><Chip label="Ocean / Climate" size="small" sx={{ bgcolor: '#e6f1eb', color: '#235c4a' }} /></header>
+    <div className="workspace"><header><span>Explore with evidence</span><Button href={user ? "#/account" : "#/signin"}>{user ? user.name : "Sign in"}</Button></header>
       <main id="content">
-        <Alert severity="info" sx={{ mb: 4 }}>Local preview. Accounts, natural-language analysis, and self-service subscriptions are planned; they are not available in this version.</Alert>
-        {error ? <Alert severity="error" action={<Button color="inherit" onClick={() => setAttempt(a => a + 1)}>Retry</Button>}>{error}</Alert> : !analysis ? <CircularProgress aria-label="Loading reference analysis" /> : page === 'reference' ? <Reference analysis={analysis} /> : <Planner analysis={analysis} />}
+        <AccountNotice key={hash} />
+        {page === 'reference' || page === 'planner' ? <Alert severity="info" sx={{ mb: 4 }}>Explore the reference analysis and query planner. Live analysis and subscriptions are coming in later increments.</Alert> : null}
+        {page === 'account' ? <AccountScreen /> : accountPages.includes(page) ? <AuthScreen key={hash} page={page as Parameters<typeof AuthScreen>[0]['page']} /> : error ? <Alert severity="error" action={<Button color="inherit" onClick={() => setAttempt(a => a + 1)}>Retry</Button>}>{error}</Alert> : !analysis ? <CircularProgress aria-label="Loading reference analysis" /> : page === 'reference' ? <Reference analysis={analysis} /> : <Planner analysis={analysis} />}
         <footer>Scientific Dataset Copilot · Source: NOAA NCEI · Exploratory scientific analysis</footer>
       </main>
     </div>
   </div>;
 }
 
-createRoot(document.getElementById('root')!).render(<ThemeProvider theme={theme}><CssBaseline /><App /></ThemeProvider>);
+createRoot(document.getElementById('root')!).render(<ThemeProvider theme={theme}><CssBaseline /><AccountProvider><App /></AccountProvider></ThemeProvider>);
