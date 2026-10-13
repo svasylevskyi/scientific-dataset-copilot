@@ -1,0 +1,70 @@
+# Architecture and engineering decisions
+
+## Implemented in increment 1
+
+One repository contains a Python/FastAPI backend and React/TypeScript/Vite frontend.
+The local preview API serves a fixed, checked-in public NOAA example and builds
+query plans against its metadata snapshot. It never runs scientific work from an
+HTTP request. The explicit CLI downloads and processes bounded source subsets.
+
+The query planner, connector, and scientific calculation are separate modules with
+Pydantic contracts. Frontend types are generated from OpenAPI. There is no fabricated
+authentication, billing, AI, or persistence implementation in this first increment.
+
+## Target architecture
+
+A modular monolith with a separate worker, PostgreSQL, object storage, and a task
+queue. Initial worker candidate: Celery/Redis; finalize durable delivery/lease
+semantics in increment 4 after reviewing Radar's current PostgreSQL-backed worker.
+The database remains authoritative for run state and usage accounting regardless
+of transport. No distributed microservice platform is needed initially.
+
+Use PostgreSQL in development, tests, and production once persistence is introduced.
+Use SQLAlchemy/Alembic; migrations are versioned and checked in CI. Do not develop
+against SQLite and discover different concurrency semantics at launch.
+
+### Shared platform responsibilities
+
+Accounts/workspaces and ownership; plans/subscriptions and entitlement enforcement;
+immutable analysis runs and stage history; artifact storage/retention; source and
+method provenance; structured logging, diagnostics, and cost/usage tracking.
+
+### Extension boundaries
+
+1. Source connectors describe/query/fetch provider data and declare capabilities.
+2. Domain modules own terminology, scientific operations, validation, and caveats.
+3. Processing/rendering modules handle typed tables, time series, grids, and later
+   other structures. Do not require latitude/longitude on every future dataset.
+
+The SST implementation is domain-specific. Do not treat its Pydantic models as a
+universal scientific ontology. Introduce a small shared envelope when a second
+real data shape demonstrates the need.
+
+## AI boundary
+
+AI proposes structured intent, selects among eligible registered capabilities,
+asks clarifying questions, and explains computed outputs. Application code validates
+metadata, builds requests, enforces limits, performs calculations, and renders charts.
+Initial execution uses registered operations; arbitrary generated code is out of scope.
+
+Treat external metadata as untrusted content. Restrict network destinations and
+redirects, downloaded/decompressed bytes, cell counts, runtime, retry count, and AI
+spend. A failed interpretation must not discard valid scientific outputs.
+
+## Reuse decisions
+
+The current Radar README was inspected on 2026-10-13. It documents PostgreSQL,
+revocable sessions, a durable staged worker, and owner-scoped runs. Reuse these
+patterns and selectively inspect code in the relevant increment; do not copy its
+complete application or assume its authorization/billing choices fit this product.
+
+Margin Protection's evidence-preserving imports and deterministic calculations
+inform this product's immutable source artifacts and calculated outputs. Current
+implementation must be inspected before any code is reused.
+
+## Release process
+
+Small PRs target `main`; Stepan reviews and merges. CI tests scientific calculations,
+API contracts, frontend builds and main browser flows. Live source verification is
+explicit and separate from deterministic CI. Production releases and paid-service
+configuration follow their own acceptance gates; this PR deploys neither.

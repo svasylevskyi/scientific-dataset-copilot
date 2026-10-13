@@ -1,0 +1,660 @@
+{
+  "components": {
+    "schemas": {
+      "AnalysisRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "end": {
+            "format": "date",
+            "title": "End",
+            "type": "string"
+          },
+          "region_id": {
+            "default": "canaries",
+            "enum": [
+              "canaries",
+              "madeira"
+            ],
+            "title": "Region Id",
+            "type": "string"
+          },
+          "start": {
+            "format": "date",
+            "title": "Start",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "AnalysisRequest",
+        "type": "object"
+      },
+      "AnalysisResult": {
+        "additionalProperties": false,
+        "properties": {
+          "actual_end": {
+            "format": "date",
+            "title": "Actual End",
+            "type": "string"
+          },
+          "actual_start": {
+            "format": "date",
+            "title": "Actual Start",
+            "type": "string"
+          },
+          "artifacts": {
+            "items": {
+              "$ref": "#/components/schemas/RawArtifact"
+            },
+            "title": "Artifacts",
+            "type": "array"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "eligible_cells": {
+            "title": "Eligible Cells",
+            "type": "integer"
+          },
+          "expected_days": {
+            "title": "Expected Days",
+            "type": "integer"
+          },
+          "low_coverage_days": {
+            "title": "Low Coverage Days",
+            "type": "integer"
+          },
+          "method_sha256": {
+            "title": "Method Sha256",
+            "type": "string"
+          },
+          "method_version": {
+            "default": "sst-area-monthly-v1",
+            "title": "Method Version",
+            "type": "string"
+          },
+          "months": {
+            "items": {
+              "$ref": "#/components/schemas/MonthlyValue"
+            },
+            "title": "Months",
+            "type": "array"
+          },
+          "never_valid_cells": {
+            "title": "Never Valid Cells",
+            "type": "integer"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/QueryPlan"
+          },
+          "received_days": {
+            "title": "Received Days",
+            "type": "integer"
+          },
+          "runtime_versions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Runtime Versions",
+            "type": "object"
+          },
+          "schema_version": {
+            "const": 1,
+            "default": 1,
+            "title": "Schema Version",
+            "type": "integer"
+          },
+          "source_kind": {
+            "enum": [
+              "live_noaa",
+              "synthetic_test"
+            ],
+            "title": "Source Kind",
+            "type": "string"
+          },
+          "source_revision": {
+            "title": "Source Revision",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "plan",
+          "created_at",
+          "source_kind",
+          "months",
+          "actual_start",
+          "actual_end",
+          "received_days",
+          "expected_days",
+          "eligible_cells",
+          "never_valid_cells",
+          "low_coverage_days",
+          "artifacts",
+          "runtime_versions",
+          "source_revision",
+          "method_sha256",
+          "warnings"
+        ],
+        "title": "AnalysisResult",
+        "type": "object"
+      },
+      "Bounds": {
+        "additionalProperties": false,
+        "properties": {
+          "east": {
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "East",
+            "type": "number"
+          },
+          "north": {
+            "maximum": 89.0,
+            "minimum": -89.0,
+            "title": "North",
+            "type": "number"
+          },
+          "south": {
+            "maximum": 89.0,
+            "minimum": -89.0,
+            "title": "South",
+            "type": "number"
+          },
+          "west": {
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "West",
+            "type": "number"
+          }
+        },
+        "required": [
+          "west",
+          "east",
+          "south",
+          "north"
+        ],
+        "title": "Bounds",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "MonthlyValue": {
+        "additionalProperties": false,
+        "properties": {
+          "coverage_fraction": {
+            "title": "Coverage Fraction",
+            "type": "number"
+          },
+          "expected_days": {
+            "title": "Expected Days",
+            "type": "integer"
+          },
+          "mean_celsius": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mean Celsius"
+          },
+          "min_daily_area_fraction": {
+            "title": "Min Daily Area Fraction",
+            "type": "number"
+          },
+          "month": {
+            "format": "date",
+            "title": "Month",
+            "type": "string"
+          },
+          "partial_month": {
+            "title": "Partial Month",
+            "type": "boolean"
+          },
+          "valid_days": {
+            "title": "Valid Days",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "month",
+          "mean_celsius",
+          "valid_days",
+          "expected_days",
+          "coverage_fraction",
+          "min_daily_area_fraction",
+          "partial_month"
+        ],
+        "title": "MonthlyValue",
+        "type": "object"
+      },
+      "QueryChunk": {
+        "additionalProperties": false,
+        "properties": {
+          "end": {
+            "format": "date",
+            "title": "End",
+            "type": "string"
+          },
+          "start": {
+            "format": "date",
+            "title": "Start",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end",
+          "url"
+        ],
+        "title": "QueryChunk",
+        "type": "object"
+      },
+      "QueryPlan": {
+        "additionalProperties": false,
+        "properties": {
+          "chunks": {
+            "items": {
+              "$ref": "#/components/schemas/QueryChunk"
+            },
+            "title": "Chunks",
+            "type": "array"
+          },
+          "estimated_cells": {
+            "title": "Estimated Cells",
+            "type": "integer"
+          },
+          "metadata_fetched_at": {
+            "format": "date-time",
+            "title": "Metadata Fetched At",
+            "type": "string"
+          },
+          "metadata_sha256": {
+            "title": "Metadata Sha256",
+            "type": "string"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "request": {
+            "$ref": "#/components/schemas/AnalysisRequest"
+          },
+          "selected_grid_bounds": {
+            "$ref": "#/components/schemas/Bounds"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "request",
+          "region",
+          "source",
+          "selected_grid_bounds",
+          "estimated_cells",
+          "chunks",
+          "metadata_sha256",
+          "metadata_fetched_at",
+          "warnings"
+        ],
+        "title": "QueryPlan",
+        "type": "object"
+      },
+      "RawArtifact": {
+        "additionalProperties": false,
+        "properties": {
+          "bytes": {
+            "title": "Bytes",
+            "type": "integer"
+          },
+          "duration_seconds": {
+            "title": "Duration Seconds",
+            "type": "number"
+          },
+          "file": {
+            "title": "File",
+            "type": "string"
+          },
+          "query_url": {
+            "title": "Query Url",
+            "type": "string"
+          },
+          "sha256": {
+            "title": "Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "sha256",
+          "bytes",
+          "query_url",
+          "duration_seconds"
+        ],
+        "title": "RawArtifact",
+        "type": "object"
+      },
+      "Region": {
+        "additionalProperties": false,
+        "properties": {
+          "bounds": {
+            "$ref": "#/components/schemas/Bounds"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "bounds"
+        ],
+        "title": "Region",
+        "type": "object"
+      },
+      "Source": {
+        "additionalProperties": false,
+        "properties": {
+          "citation_url": {
+            "title": "Citation Url",
+            "type": "string"
+          },
+          "coverage_end": {
+            "format": "date",
+            "title": "Coverage End",
+            "type": "string"
+          },
+          "coverage_start": {
+            "format": "date",
+            "title": "Coverage Start",
+            "type": "string"
+          },
+          "dataset_id": {
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "grid_resolution": {
+            "title": "Grid Resolution",
+            "type": "number"
+          },
+          "latitude_max": {
+            "title": "Latitude Max",
+            "type": "number"
+          },
+          "latitude_min": {
+            "title": "Latitude Min",
+            "type": "number"
+          },
+          "license": {
+            "title": "License",
+            "type": "string"
+          },
+          "longitude_max": {
+            "title": "Longitude Max",
+            "type": "number"
+          },
+          "longitude_min": {
+            "title": "Longitude Min",
+            "type": "number"
+          },
+          "metadata_url": {
+            "title": "Metadata Url",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "provider": {
+            "title": "Provider",
+            "type": "string"
+          },
+          "units": {
+            "title": "Units",
+            "type": "string"
+          },
+          "variable": {
+            "title": "Variable",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dataset_id",
+          "name",
+          "provider",
+          "version",
+          "variable",
+          "units",
+          "metadata_url",
+          "citation_url",
+          "coverage_start",
+          "coverage_end",
+          "latitude_min",
+          "latitude_max",
+          "longitude_min",
+          "longitude_max",
+          "grid_resolution",
+          "license"
+        ],
+        "title": "Source",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "Scientific Dataset Copilot",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/catalog": {
+      "get": {
+        "operationId": "catalog_api_v1_catalog_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Catalog"
+      }
+    },
+    "/api/v1/health": {
+      "get": {
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Health Api V1 Health Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health"
+      }
+    },
+    "/api/v1/query-preview": {
+      "post": {
+        "operationId": "query_preview_api_v1_query_preview_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalysisRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryPlan"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Query Preview"
+      }
+    },
+    "/api/v1/reference": {
+      "get": {
+        "operationId": "get_reference_api_v1_reference_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisResult"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Reference"
+      }
+    },
+    "/api/v1/reference.csv": {
+      "get": {
+        "operationId": "export_reference_api_v1_reference_csv_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Export Reference"
+      }
+    },
+    "/api/v1/reference.json": {
+      "get": {
+        "operationId": "export_provenance_api_v1_reference_json_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Export Provenance"
+      }
+    }
+  }
+}
