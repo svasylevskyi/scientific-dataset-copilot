@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, pool
 from app.accounts import models  # noqa: F401
 from app.config import settings
 from app.db import Base
+from app.plans import models as plan_models  # noqa: F401
 
 if context.is_offline_mode():
     context.configure(

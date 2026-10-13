@@ -21,7 +21,14 @@ accidentally grant unpaid access to a mapped paid subscription.
 Increment 2 implementation includes local SMTP capture, profile and verified email
 changes, session management, explicit admin bootstrap, PostgreSQL migration checks,
 and account isolation/concurrency/browser tests. See [accounts](accounts.md).
-Increment 3 is next after review and acceptance.
+Increment 3 now includes database-managed free plans, admin editing/defaults and
+assignments, a user plan/usage page, migration backfill, atomic reservations,
+idempotent terminal accounting and a separate processing-expense ledger. See
+[plans and usage](plans-and-usage.md). Price mappings and paid activation stay with
+Stripe checkout in increment 6; all currently assignable plans are free.
+Increment 4 (durable user analysis) is next after review and acceptance. It must
+connect quota reservation to job persistence before any dispatch, and implement
+lease recovery and artifact retention.
 
 ### Later increments
 

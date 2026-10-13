@@ -9,10 +9,11 @@ NOAA OISST sea-surface temperature is the first verified workflow.
 The app provides a verified NOAA reference analysis and query planner, plus
 persistent accounts and personal workspaces. Users can register, verify their
 email, sign in, recover or change a password, update their profile/email, and
-review or revoke sessions. A local email inbox makes these flows testable.
+review or revoke sessions. Administrators manage free plans and account assignments;
+members can view their plan and usage. A local email inbox makes these flows testable.
 
 **This is a local development app, not a launch-ready subscription service.**
-Saved analyses, background execution, AI assistance, plans and billing follow in
+Saved analyses, background execution, AI assistance and paid billing follow in
 the [self-service SaaS roadmap](docs/roadmap.md). Scientific HTTP endpoints still
 serve the frozen reference and metadata; only the explicit CLI retrieves live data.
 
@@ -128,8 +129,12 @@ First register and verify an ordinary account. Then explicitly grant its role:
 For the full Compose setup use `docker compose exec api python -m app.accounts.cli
 promote explorer@example.com` (on one line). Refresh the account page to see account
 counts. `demote` reverses this role change. No default admin credentials are created.
-Admin access does not grant access to another user's workspace. Full user/plan
-administration belongs to the next increments.
+Admin access does not grant access to another user's workspace. **Manage plans**
+provides plan editing, registration defaults, archiving and account assignment.
+**Plan and usage** shows the member's allowance and history. Migration `0002_plans`
+assigns existing accounts to an editable free Development plan (20 monthly analyses,
+one at a time). Live analysis execution comes next; reference previews use no quota.
+See [plans and usage](docs/plans-and-usage.md) for policies and testing steps.
 
 See [account architecture and configuration](docs/accounts.md) for SMTP settings,
 session semantics and deployment boundaries.

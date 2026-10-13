@@ -106,6 +106,10 @@ def main():
     account = json.load(login)
     assert request("/api/v1/workspaces/" + account["workspace"]["id"]).status == 200
     assert request("/api/v1/auth/me").status == 200
+    usage = json.load(request("/api/v1/account/usage"))
+    assert usage["status"] == "active" and usage["plan"]["billing"] == "free"
+    assert usage["consumed"] == 0 and usage["reserved"] == 0
+    assert usage["remaining"] == usage["plan"]["monthly_analyses"]
     assert request("/api/v1/auth/logout", {}).status == 200
     assert_signed_out()
     # No database dump content is printed or modified by this check.

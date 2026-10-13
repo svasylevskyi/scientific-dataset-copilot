@@ -7,6 +7,7 @@ import {
 import { request, type Analysis, type AnalysisRequest, type QueryPlan } from './api';
 import './style.css';
 import { AccountProvider, AccountScreen, AuthScreen, AccountNotice, useAccount, useRoute } from './Account';
+import { AdminPlansScreen, PlanUsageScreen } from './Plans';
 
 const Chart = lazy(() => import('./Chart'));
 const theme = createTheme({
@@ -105,14 +106,17 @@ function App() {
         <button className={page === 'reference' ? 'active' : ''} onClick={() => setPage('reference')} aria-current={page === 'reference' ? 'page' : undefined}>Reference analysis</button>
         <button className={page === 'planner' ? 'active' : ''} onClick={() => setPage('planner')} aria-current={page === 'planner' ? 'page' : undefined}>Query planner</button>
       </nav>
-      <div className="account-nav"><Button href="#/account" sx={{ color: "#cee2dc" }}>{user ? "Your account" : "Account"}</Button></div>
+      <div className="account-nav"><Button href="#/account" sx={{ color: "#cee2dc" }}>{user ? "Your account" : "Account"}</Button>
+        {user && <Button href="#/usage" sx={{ color: '#cee2dc' }}>Plan and usage</Button>}
+        {user?.role === 'admin' && <Button href="#/admin/plans" sx={{ color: '#cee2dc' }}>Manage plans</Button>}
+      </div>
       <div className="sidebar-note"><span className="status-dot" />Development preview<p>Open data.<br />Visible methods.<br />Reproducible results.</p></div>
     </aside>
     <div className="workspace"><header><span>Explore with evidence</span><Button href={user ? "#/account" : "#/signin"}>{user ? user.name : "Sign in"}</Button></header>
       <main id="content">
         <AccountNotice key={hash} />
         {page === 'reference' || page === 'planner' ? <Alert severity="info" sx={{ mb: 4 }}>Explore the reference analysis and query planner. Live analysis and subscriptions are coming in later increments.</Alert> : null}
-        {page === 'account' ? <AccountScreen /> : accountPages.includes(page) ? <AuthScreen key={hash} page={page as Parameters<typeof AuthScreen>[0]['page']} /> : error ? <Alert severity="error" action={<Button color="inherit" onClick={() => setAttempt(a => a + 1)}>Retry</Button>}>{error}</Alert> : !analysis ? <CircularProgress aria-label="Loading reference analysis" /> : page === 'reference' ? <Reference analysis={analysis} /> : <Planner analysis={analysis} />}
+        {page === 'usage' ? <PlanUsageScreen /> : page === 'admin/plans' ? <AdminPlansScreen /> : page === 'account' ? <AccountScreen /> : accountPages.includes(page) ? <AuthScreen key={hash} page={page as Parameters<typeof AuthScreen>[0]['page']} /> : error ? <Alert severity="error" action={<Button color="inherit" onClick={() => setAttempt(a => a + 1)}>Retry</Button>}>{error}</Alert> : !analysis ? <CircularProgress aria-label="Loading reference analysis" /> : page === 'reference' ? <Reference analysis={analysis} /> : <Planner analysis={analysis} />}
         <footer>Scientific Dataset Copilot · Source: NOAA NCEI · Exploratory scientific analysis</footer>
       </main>
     </div>

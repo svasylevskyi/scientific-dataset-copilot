@@ -7,6 +7,10 @@ export type Account = components['schemas']['AccountView'];
 export type AccountSession = components['schemas']['SessionView'];
 export type Message = components['schemas']['Message'];
 export type AdminSummary = components['schemas']['AdminSummary'];
+export type Plan = components['schemas']['PlanView'];
+export type AdminPlan = components['schemas']['AdminPlanView'];
+export type PlanInput = components['schemas']['PlanInput'];
+export type Usage = components['schemas']['UsageView'];
 
 export class ApiError extends Error {
   constructor(message: string, public status: number) { super(message); }

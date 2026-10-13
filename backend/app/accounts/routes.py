@@ -38,6 +38,7 @@ from app.accounts.service import (
 )
 from app.config import settings
 from app.db import get_db
+from app.plans.service import assign_default
 
 Db = Annotated[Session, Depends(get_db, scope="function")]
 
@@ -74,7 +75,9 @@ def register(body: RegisterInput, request: Request, db: Db):
     )
     user = db.scalar(select(User).where(User.email == body.email).with_for_update())
     if user_id:
-        db.add(Workspace(owner_id=user_id))
+        workspace = Workspace(owner_id=user_id)
+        db.add(workspace)
+        assign_default(db, workspace)
     if user and user.active and not user.verified_at:
         issue_email(db, user, "verify")
     return GENERIC

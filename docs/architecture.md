@@ -8,8 +8,9 @@ query plans against its metadata snapshot. It never runs scientific work from an
 HTTP request. The explicit CLI downloads and processes bounded source subsets.
 
 The query planner, connector, and scientific calculation are separate modules with
-Pydantic contracts. Frontend types are generated from OpenAPI. Billing and AI remain roadmap capabilities; accounts and persistence were added
-in increment 2.
+Pydantic contracts. Frontend types are generated from OpenAPI. Billing and AI remain
+roadmap capabilities; accounts and persistence were added in increment 2, and
+plans/usage accounting in increment 3.
 
 ## Implemented in increment 2
 
@@ -21,6 +22,12 @@ a local PostgreSQL database, migration step and Mailpit inbox. See
 [account architecture](accounts.md) for transaction and security semantics.
 
 ## Target architecture
+
+Increment 3 persists free plans, default registration assignments, workspace access
+status, analysis reservations, usage events and separate processing expenses. Plan
+administration and the member usage page are available; execution remains disabled.
+The worker must call the internal entitlement service within the job transaction.
+See [plan and usage contracts](plans-and-usage.md).
 
 A modular monolith with a separate worker, PostgreSQL, object storage, and a task
 queue. Initial worker candidate: Celery/Redis; finalize durable delivery/lease

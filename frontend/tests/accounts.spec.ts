@@ -52,7 +52,10 @@ test('independent signup, profile, return, recovery, and verified email change',
   await main.getByRole('button', { name: 'Sign out here' }).click();
   await expect(main.getByRole('heading', { name: 'Sign in', exact: true })).toBeVisible();
   await main.getByRole('link', { name: 'Forgot password?' }).click();
+  // Both screens have an Email field; wait for the hash-route render before filling it.
+  await expect(main.getByRole('heading', { name: 'Reset your password', exact: true })).toBeVisible();
   await main.getByLabel(/^Email(?:\s*\*)?$/).fill(email);
+  await expect(main.getByLabel(/^Email(?:\s*\*)?$/)).toHaveValue(email);
   await main.getByRole('button', { name: 'Reset your password', exact: true }).click();
   await expect(main.getByText(/an email is on its way/)).toBeVisible();
   await page.goto(await emailLink(request, email, 'reset'));
