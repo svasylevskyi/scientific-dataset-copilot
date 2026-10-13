@@ -47,7 +47,8 @@ services:
     # The inbox is reachable only from the server or through an SSH tunnel.
     ports:
       - '127.0.0.1:8025:8025'
-    networks: [backend]
+    # Docker does not publish ports from internal-only networks.
+    networks: [backend, inbox]
     logging: *logging
 
   migrate:
@@ -130,6 +131,7 @@ volumes:
 networks:
   backend:
     internal: true
+  inbox: {}
   proxy:
     ipam:
       config:

@@ -228,8 +228,10 @@ resetting this disposable development environment.
 The proxy's private address is `172.30.88.10`; the API trusts forwarded client IPs
 only from that address. Caddy discards untrusted client-supplied forwarding headers.
 Adjust both the subnet and trusted address together if an existing server network
-conflicts. The database/mail network is internal. Mailpit messages expire after
-seven days or when the 200-message limit is reached. Container logs are bounded.
+conflicts. The database/mail network is internal. Mailpit also has a separate
+bridge for publishing its inbox on host loopback; SMTP has no host port and no
+outbound relay is configured. Messages expire after seven days or when the
+200-message limit is reached. Container logs are bounded.
 
 This provides development deployment, not the commercial launch gate. Production
 requires its own host/data/secrets, real SMTP, off-server backup/restore acceptance,
