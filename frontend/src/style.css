@@ -1,0 +1,62 @@
+:root { font-synthesis: none; text-rendering: optimizeLegibility; }
+body { margin: 0; }
+a { color: #14695f; text-underline-offset: 3px; }
+.app-shell { display: flex; min-height: 100vh; }
+.sidebar { width: 230px; flex-shrink: 0; background: #123d40; color: #f4faf6; padding: 30px 20px; display: flex; flex-direction: column; }
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 650; font-size: 16px; line-height: 1.3; margin-bottom: 56px; }
+.brand-mark { width: 42px; height: 42px; border: 1px solid #83b2a8; border-radius: 12px; display: grid; place-items: center; font-size: 38px; color: #b8e0c9; }
+.nav-label, .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 12px; }
+.nav-label { color: #a1c4be; padding-left: 12px; }
+nav { display: flex; flex-direction: column; gap: 7px; }
+nav button { text-align: left; border: 0; background: none; color: #cee2dc; padding: 14px 12px; border-radius: 8px; font: inherit; font-size: 14px; cursor: pointer; }
+nav button:hover { background: #1c4b4d; }
+nav button.active { color: #fff; background: #295755; box-shadow: inset 3px 0 #b8ddaf; }
+.sidebar-note { margin-top: auto; padding: 48px 12px 0; font-size: 11px; color: #b7d0c8; }
+.sidebar-note p { margin-top: 15px; font-size: 13px; line-height: 1.8; }
+.status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #b8ddaf; margin-right: 8px; }
+.workspace { flex: 1; min-width: 0; }
+header { background: white; border-bottom: 1px solid #e2e9e5; height: 70px; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: #65787a; }
+main { padding: 32px 40px; }
+.eyebrow { color: #5d8572; }
+.title-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 28px 0 24px; }
+.stat { border: 1px solid #e2e9e5; padding: 21px 24px; display: flex; flex-direction: column; }
+.stat span { font-size: 12px; color: #596e70; }
+.stat strong { font-size: 29px; font-weight: 600; letter-spacing: -1px; margin: 5px 0; }
+.stat small { font-size: 11px; color: #65787a; }
+.panel { padding: 26px; border: 1px solid #e2e9e5; margin-bottom: 22px; }
+.panel p, .panel li { font-size: 14px; line-height: 1.75; color: #52686a; }
+.panel li + li { margin-top: 10px; }
+.panel a { font-size: 13px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.form-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 20px; }
+summary { cursor: pointer; font-size: 14px; font-weight: 600; }
+.query { padding: 16px 0; font-size: 13px; }
+.query code { display: block; overflow-wrap: anywhere; color: #637679; margin-top: 7px; }
+footer { font-size: 11px; color: #6c7e7c; padding: 12px 0 4px; }
+.skip-link { position: fixed; top: -60px; left: 12px; padding: 12px; background: white; z-index: 5; }
+.skip-link:focus { top: 12px; }
+@media (min-width: 1700px) { main { padding-left: 60px; padding-right: 60px; } }
+@media (max-width: 1050px) { .sidebar { width: 200px; padding-inline: 14px; } main { padding: 24px; } .form-grid { grid-template-columns: 1fr; } .stat { padding: 16px; } }
+@media (max-width: 760px) {
+  .app-shell { display: block; }
+  .sidebar { width: 100%; padding: 18px; }
+  .brand { margin: 0 0 16px; }
+  .brand br { display: none; }
+  .brand span { font-size: 16px; }
+  .brand-mark { width: 34px; height: 34px; font-size: 30px; }
+  nav { flex-direction: row; }
+  nav button { flex: 1; padding: 12px; }
+  .nav-label, .sidebar-note { display: none; }
+  header { height: 54px; padding: 0 20px; }
+  main { padding: 22px 16px; }
+  main h1.MuiTypography-root { font-size: 27px; }
+  .stats { gap: 9px; }
+  .stat { padding: 14px 10px; }
+  .stat strong { font-size: 22px; white-space: nowrap; }
+  .stat small { font-size: 10px; }
+  .detail-grid { grid-template-columns: 1fr; gap: 0; }
+  .panel { padding: 20px; }
+  .chart-panel { padding: 20px 10px; }
+  .chart-panel .title-row { padding: 0 10px; }
+}

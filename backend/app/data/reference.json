@@ -1,0 +1,1285 @@
+{
+  "schema_version": 1,
+  "method_version": "sst-area-monthly-v1",
+  "plan": {
+    "request": {
+      "region_id": "canaries",
+      "start": "2016-01-01",
+      "end": "2025-12-31"
+    },
+    "region": {
+      "id": "canaries",
+      "name": "Canary Islands — surrounding ocean",
+      "bounds": {
+        "west": -19.0,
+        "east": -13.0,
+        "south": 27.0,
+        "north": 30.0
+      }
+    },
+    "source": {
+      "dataset_id": "ncdcOisst21Agg",
+      "name": "SST, Daily Optimum Interpolation (OI), AVHRR Only, Version 2.1, Final, Global, 0.25°, 1981-present",
+      "provider": "NOAA NCEI",
+      "version": "Version v02r01",
+      "variable": "sst",
+      "units": "°C",
+      "metadata_url": "https://coastwatch.pfeg.noaa.gov/erddap/info/ncdcOisst21Agg/index.json",
+      "citation_url": "https://doi.org/10.25921/RE9P-PT57",
+      "coverage_start": "1981-09-01",
+      "coverage_end": "2026-09-27",
+      "latitude_min": -89.875,
+      "latitude_max": 89.875,
+      "longitude_min": 0.125,
+      "longitude_max": 359.875,
+      "grid_resolution": 0.25,
+      "license": "The data may be used and redistributed for free but is not intended\nfor legal use, since it may contain inaccuracies. Neither the data\nContributor, ERD, NOAA, nor the United States Government, nor any\nof their employees or contractors, makes any warranty, express or\nimplied, including warranties of merchantability and fitness for a\nparticular purpose, or assumes any legal liability for the accuracy,\ncompleteness, or usefulness, of this information."
+    },
+    "selected_grid_bounds": {
+      "west": -18.875,
+      "east": -13.125,
+      "south": 27.125,
+      "north": 29.875
+    },
+    "estimated_cells": 1052064,
+    "chunks": [
+      {
+        "start": "2016-01-01",
+        "end": "2016-12-31",
+        "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282016-01-01T12%3A00%3A00Z%29%3A1%3A%282016-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D"
+      },
+      {
+        "start": "2017-01-01",
+        "end": "2017-12-31",
+        "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282017-01-01T12%3A00%3A00Z%29%3A1%3A%282017-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D"
+      },
+      {
+        "start": "2018-01-01",
+        "end": "2018-12-31",
+        "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282018-01-01T12%3A00%3A00Z%29%3A1%3A%282018-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D"
+      },
+      {
+        "start": "2019-01-01",
+        "end": "2019-12-31",
+        "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282019-01-01T12%3A00%3A00Z%29%3A1%3A%282019-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D"
+      },
+      {
+        "start": "2020-01-01",
+        "end": "2020-12-31",
+        "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282020-01-01T12%3A00%3A00Z%29%3A1%3A%282020-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D"
+      },
+      {
+        "start": "2021-01-01",
+        "end": "2021-12-31",
+        "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282021-01-01T12%3A00%3A00Z%29%3A1%3A%282021-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D"
+      },
+      {
+        "start": "2022-01-01",
+        "end": "2022-12-31",
+        "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282022-01-01T12%3A00%3A00Z%29%3A1%3A%282022-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D"
+      },
+      {
+        "start": "2023-01-01",
+        "end": "2023-12-31",
+        "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282023-01-01T12%3A00%3A00Z%29%3A1%3A%282023-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D"
+      },
+      {
+        "start": "2024-01-01",
+        "end": "2024-12-31",
+        "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282024-01-01T12%3A00%3A00Z%29%3A1%3A%282024-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D"
+      },
+      {
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282025-01-01T12%3A00%3A00Z%29%3A1%3A%282025-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D"
+      }
+    ],
+    "metadata_sha256": "7924c75710fbce81379ff55930664ccf1690250f3ee5d7136ebb91df02ae41ce",
+    "metadata_fetched_at": "2026-10-13T09:10:05.420303Z",
+    "warnings": [
+      "The region is a stated bounding box, not an island boundary or a coastal station.",
+      "Final OISST data lag real time. Coverage is taken from the inspected metadata.",
+      "A time stride is sampling, not averaging; this plan requests every available day."
+    ]
+  },
+  "created_at": "2026-10-13T09:16:51.779606Z",
+  "source_kind": "live_noaa",
+  "months": [
+    {
+      "month": "2016-01-01",
+      "mean_celsius": 20.379763263187808,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-02-01",
+      "mean_celsius": 19.70241763930245,
+      "valid_days": 29,
+      "expected_days": 29,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-03-01",
+      "mean_celsius": 19.027870163258918,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-04-01",
+      "mean_celsius": 19.52626104030759,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-05-01",
+      "mean_celsius": 20.094299686429373,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-06-01",
+      "mean_celsius": 21.606167862702865,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-07-01",
+      "mean_celsius": 22.187452821274512,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-08-01",
+      "mean_celsius": 22.74263467920954,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-09-01",
+      "mean_celsius": 23.496282521068466,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-10-01",
+      "mean_celsius": 23.273339029118095,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-11-01",
+      "mean_celsius": 22.38760190007239,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2016-12-01",
+      "mean_celsius": 21.109722438605473,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-01-01",
+      "mean_celsius": 19.642243909474768,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-02-01",
+      "mean_celsius": 18.87194528959945,
+      "valid_days": 28,
+      "expected_days": 28,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-03-01",
+      "mean_celsius": 18.744787413641117,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-04-01",
+      "mean_celsius": 20.026002266865316,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-05-01",
+      "mean_celsius": 21.46612320437726,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-06-01",
+      "mean_celsius": 21.822213862936977,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-07-01",
+      "mean_celsius": 22.41379281038959,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-08-01",
+      "mean_celsius": 23.315712998357405,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-09-01",
+      "mean_celsius": 23.331952314322777,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-10-01",
+      "mean_celsius": 23.534518205053615,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-11-01",
+      "mean_celsius": 22.50368672410111,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2017-12-01",
+      "mean_celsius": 20.95499217078553,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-01-01",
+      "mean_celsius": 19.384665654609112,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-02-01",
+      "mean_celsius": 18.525766515901477,
+      "valid_days": 28,
+      "expected_days": 28,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-03-01",
+      "mean_celsius": 19.000089025320673,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-04-01",
+      "mean_celsius": 18.80278631794962,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-05-01",
+      "mean_celsius": 19.21125842126659,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-06-01",
+      "mean_celsius": 20.48931547801579,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-07-01",
+      "mean_celsius": 21.463734206567413,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-08-01",
+      "mean_celsius": 22.53672049677987,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-09-01",
+      "mean_celsius": 22.98764247696897,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-10-01",
+      "mean_celsius": 23.578637240628392,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-11-01",
+      "mean_celsius": 21.841477554704117,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2018-12-01",
+      "mean_celsius": 20.805333720811817,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-01-01",
+      "mean_celsius": 19.541185656924306,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-02-01",
+      "mean_celsius": 18.959227953021035,
+      "valid_days": 28,
+      "expected_days": 28,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-03-01",
+      "mean_celsius": 19.049844174772737,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-04-01",
+      "mean_celsius": 19.318543603340512,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-05-01",
+      "mean_celsius": 19.88930926044679,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-06-01",
+      "mean_celsius": 21.366839370442612,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-07-01",
+      "mean_celsius": 22.138536628480754,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-08-01",
+      "mean_celsius": 22.68724435863031,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-09-01",
+      "mean_celsius": 23.056056155670376,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-10-01",
+      "mean_celsius": 22.55232189481024,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-11-01",
+      "mean_celsius": 21.533087853973424,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2019-12-01",
+      "mean_celsius": 20.42714631950569,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-01-01",
+      "mean_celsius": 19.55931988185008,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-02-01",
+      "mean_celsius": 19.381026939482393,
+      "valid_days": 29,
+      "expected_days": 29,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-03-01",
+      "mean_celsius": 19.240833235442327,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-04-01",
+      "mean_celsius": 20.276693491675022,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-05-01",
+      "mean_celsius": 20.897240632674308,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-06-01",
+      "mean_celsius": 22.511851962394026,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-07-01",
+      "mean_celsius": 22.390172026229635,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-08-01",
+      "mean_celsius": 23.07322671410636,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-09-01",
+      "mean_celsius": 23.87726572503127,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-10-01",
+      "mean_celsius": 23.436390014357865,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-11-01",
+      "mean_celsius": 22.248867151023543,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2020-12-01",
+      "mean_celsius": 21.07220810043385,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-01-01",
+      "mean_celsius": 19.896777137102603,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-02-01",
+      "mean_celsius": 19.61162607079455,
+      "valid_days": 28,
+      "expected_days": 28,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-03-01",
+      "mean_celsius": 19.309578572567588,
+      "valid_days": 30,
+      "expected_days": 31,
+      "coverage_fraction": 0.967741935483871,
+      "min_daily_area_fraction": 0.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-04-01",
+      "mean_celsius": 20.505348723977185,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-05-01",
+      "mean_celsius": 20.469222396555946,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-06-01",
+      "mean_celsius": 21.081217856841253,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-07-01",
+      "mean_celsius": 21.731114572121204,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-08-01",
+      "mean_celsius": 22.70216398141888,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-09-01",
+      "mean_celsius": 24.051714458099845,
+      "valid_days": 29,
+      "expected_days": 30,
+      "coverage_fraction": 0.9666666666666667,
+      "min_daily_area_fraction": 0.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-10-01",
+      "mean_celsius": 23.237265625159086,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-11-01",
+      "mean_celsius": 22.174123902725363,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2021-12-01",
+      "mean_celsius": 20.806040658917315,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-01-01",
+      "mean_celsius": 19.882331427780866,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-02-01",
+      "mean_celsius": 19.44526678902387,
+      "valid_days": 28,
+      "expected_days": 28,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-03-01",
+      "mean_celsius": 19.1951662639681,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-04-01",
+      "mean_celsius": 19.474535184991232,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-05-01",
+      "mean_celsius": 20.626449687832107,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-06-01",
+      "mean_celsius": 21.686841253972265,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-07-01",
+      "mean_celsius": 22.17066586305397,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-08-01",
+      "mean_celsius": 22.819778252243008,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-09-01",
+      "mean_celsius": 23.82227392968944,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-10-01",
+      "mean_celsius": 23.541286128237928,
+      "valid_days": 30,
+      "expected_days": 31,
+      "coverage_fraction": 0.967741935483871,
+      "min_daily_area_fraction": 0.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-11-01",
+      "mean_celsius": 22.998764648363995,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2022-12-01",
+      "mean_celsius": 21.99181971985617,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-01-01",
+      "mean_celsius": 20.892196224006582,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-02-01",
+      "mean_celsius": 19.604817033618154,
+      "valid_days": 27,
+      "expected_days": 28,
+      "coverage_fraction": 0.9642857142857143,
+      "min_daily_area_fraction": 0.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-03-01",
+      "mean_celsius": 20.18549336587111,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-04-01",
+      "mean_celsius": 20.30822294184683,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-05-01",
+      "mean_celsius": 21.528188479179462,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-06-01",
+      "mean_celsius": 23.30008645406694,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-07-01",
+      "mean_celsius": 23.810259316698655,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-08-01",
+      "mean_celsius": 24.333745477631172,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-09-01",
+      "mean_celsius": 25.064797568623362,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-10-01",
+      "mean_celsius": 24.955488931282805,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-11-01",
+      "mean_celsius": 23.652097019393718,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2023-12-01",
+      "mean_celsius": null,
+      "valid_days": 20,
+      "expected_days": 31,
+      "coverage_fraction": 0.6451612903225806,
+      "min_daily_area_fraction": 0.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-01-01",
+      "mean_celsius": 21.225862066247068,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-02-01",
+      "mean_celsius": 20.765983141949086,
+      "valid_days": 29,
+      "expected_days": 29,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-03-01",
+      "mean_celsius": 20.116330751993118,
+      "valid_days": 30,
+      "expected_days": 31,
+      "coverage_fraction": 0.967741935483871,
+      "min_daily_area_fraction": 0.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-04-01",
+      "mean_celsius": 20.782297330296966,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-05-01",
+      "mean_celsius": 21.028828440627628,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-06-01",
+      "mean_celsius": 21.56533615666736,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-07-01",
+      "mean_celsius": 21.952900032518208,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-08-01",
+      "mean_celsius": 22.844596256335937,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-09-01",
+      "mean_celsius": 23.160131098865524,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-10-01",
+      "mean_celsius": 23.378926589811222,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-11-01",
+      "mean_celsius": 22.77790524420993,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2024-12-01",
+      "mean_celsius": 21.588797805708438,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-01-01",
+      "mean_celsius": 20.43580785027689,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-02-01",
+      "mean_celsius": 19.977845403056858,
+      "valid_days": 28,
+      "expected_days": 28,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-03-01",
+      "mean_celsius": 19.753140230631026,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-04-01",
+      "mean_celsius": 19.86942986735969,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-05-01",
+      "mean_celsius": 20.621167612730307,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-06-01",
+      "mean_celsius": 21.488116445432443,
+      "valid_days": 29,
+      "expected_days": 30,
+      "coverage_fraction": 0.9666666666666667,
+      "min_daily_area_fraction": 0.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-07-01",
+      "mean_celsius": 22.43438609130529,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-08-01",
+      "mean_celsius": 23.47069179881486,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-09-01",
+      "mean_celsius": 23.491438962810022,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-10-01",
+      "mean_celsius": 23.55222665479135,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-11-01",
+      "mean_celsius": 23.024632768516774,
+      "valid_days": 30,
+      "expected_days": 30,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    },
+    {
+      "month": "2025-12-01",
+      "mean_celsius": 20.997442928260078,
+      "valid_days": 31,
+      "expected_days": 31,
+      "coverage_fraction": 1.0,
+      "min_daily_area_fraction": 1.0,
+      "partial_month": false
+    }
+  ],
+  "actual_start": "2016-01-01",
+  "actual_end": "2025-12-31",
+  "received_days": 3636,
+  "expected_days": 3653,
+  "eligible_cells": 285,
+  "never_valid_cells": 3,
+  "low_coverage_days": 17,
+  "artifacts": [
+    {
+      "file": "subset-01.nc",
+      "sha256": "cd1d4e59b73777934f3c067ffdeb6ecf9ac16dbfe84836b0b3c347b409fa16d3",
+      "bytes": 432444,
+      "query_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282016-01-01T12%3A00%3A00Z%29%3A1%3A%282016-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D",
+      "duration_seconds": 11.104
+    },
+    {
+      "file": "subset-02.nc",
+      "sha256": "43d60fac6994477fdc4e57d72827f1a1fc7cae3d10620999b61b23ed3f94d910",
+      "bytes": 431284,
+      "query_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282017-01-01T12%3A00%3A00Z%29%3A1%3A%282017-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D",
+      "duration_seconds": 12.268
+    },
+    {
+      "file": "subset-03.nc",
+      "sha256": "c6ca93e5254f77d10c111e09f797679d37a7f490fbbd2911fd13c57bc6d29abc",
+      "bytes": 431284,
+      "query_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282018-01-01T12%3A00%3A00Z%29%3A1%3A%282018-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D",
+      "duration_seconds": 16.487
+    },
+    {
+      "file": "subset-04.nc",
+      "sha256": "716337a1f7aa18f2bd92dfc426e3311a9580677d1d549ab839370cd5bbf17e5b",
+      "bytes": 431284,
+      "query_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282019-01-01T12%3A00%3A00Z%29%3A1%3A%282019-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D",
+      "duration_seconds": 16.049
+    },
+    {
+      "file": "subset-05.nc",
+      "sha256": "f99f154a3f8d04c8fd40d16a058287912818a0c5c1071cb947b66c1c5091d024",
+      "bytes": 432444,
+      "query_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282020-01-01T12%3A00%3A00Z%29%3A1%3A%282020-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D",
+      "duration_seconds": 16.673
+    },
+    {
+      "file": "subset-06.nc",
+      "sha256": "d61323fa16588ec6573d4c516886bf90083c8a38bf7defc07e72c0e12aa77fec",
+      "bytes": 428964,
+      "query_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282021-01-01T12%3A00%3A00Z%29%3A1%3A%282021-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D",
+      "duration_seconds": 12.156
+    },
+    {
+      "file": "subset-07.nc",
+      "sha256": "15a31aae1b1442802a58363a61291e2bd6f53fc3fd7e6996940f7d75a5023fac",
+      "bytes": 430124,
+      "query_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282022-01-01T12%3A00%3A00Z%29%3A1%3A%282022-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D",
+      "duration_seconds": 12.311
+    },
+    {
+      "file": "subset-08.nc",
+      "sha256": "29e4da33885ae305a6ea577b0a0c990e78b92cc581894ec1d0f84e7358e0aad2",
+      "bytes": 418524,
+      "query_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282023-01-01T12%3A00%3A00Z%29%3A1%3A%282023-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D",
+      "duration_seconds": 11.51
+    },
+    {
+      "file": "subset-09.nc",
+      "sha256": "eb729bae4b3a676bdd0f6892255dd2e422a7e469d707abc0342b09c21d293bb6",
+      "bytes": 431284,
+      "query_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282024-01-01T12%3A00%3A00Z%29%3A1%3A%282024-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D",
+      "duration_seconds": 10.124
+    },
+    {
+      "file": "subset-10.nc",
+      "sha256": "dd739f2daa8de2f0b9525c242219896d965dde1773a8b7ba469000e29169265c",
+      "bytes": 430124,
+      "query_url": "https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg.nc?sst%5B%282025-01-01T12%3A00%3A00Z%29%3A1%3A%282025-12-31T12%3A00%3A00Z%29%5D%5B%280.0%29%5D%5B%2827.125%29%3A1%3A%2829.875%29%5D%5B%28341.125%29%3A1%3A%28346.875%29%5D",
+      "duration_seconds": 12.464
+    }
+  ],
+  "runtime_versions": {
+    "xarray": "2026.9.0",
+    "numpy": "2.5.4",
+    "pandas": "2.3.3",
+    "scipy": "1.18.1"
+  },
+  "source_revision": "83af0225ccc0c04e10def1f790b80bf7cb091f55+dirty",
+  "method_sha256": "62a634dac3561198cf4638a912932f1b52f3b9a74befbe484383c5f7b4e21b89",
+  "warnings": [
+    "OISST is a blended, interpolated gridded product, not an in-situ coastal measurement.",
+    "Eligible cells are those with at least one valid value in this run. Never-valid cells are excluded; they are not independently classified as land.",
+    "Daily means need 90% eligible area; monthly means need 90% valid requested days. Missing days are not interpolated. Partial calendar months are explicitly flagged.",
+    "The fixed eligible-cell mask is specific to this analysis period. Comparisons across runs require checking the mask and method, not just the reported means.",
+    "No trend significance, causal attribution, anomaly, or marine-heatwave diagnosis is made.",
+    "17 requested days failed area coverage or had no observation.",
+    "Some monthly values are withheld because coverage is below 90%."
+  ]
+}
