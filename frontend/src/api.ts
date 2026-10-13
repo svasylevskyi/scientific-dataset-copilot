@@ -21,12 +21,16 @@ export async function request<T>(path: string, body?: unknown, method?: string):
     signal: AbortSignal.timeout(20000),
   });
   if (!response.ok) {
+    // The development Basic-auth gateway transports app 401s as marked 403s
+    // so browsers keep the independent tester-gate credentials cached.
+    const status = response.status === 403 && response.headers.get('X-SDC-App-Status') === '401'
+      ? 401 : response.status;
     const data = await response.json().catch(() => ({}));
     const detail = typeof data.detail === 'string' ? data.detail
       : Array.isArray(data.detail) ? data.detail.map((e: { msg: string }) => e.msg).join(' ')
       : 'The request could not be completed. Please try again.';
-    if (response.status === 401 && path !== 'auth/login') window.dispatchEvent(new Event('sdc-signed-out'));
-    throw new ApiError(detail, response.status);
+    if (status === 401 && path !== 'auth/login') window.dispatchEvent(new Event('sdc-signed-out'));
+    throw new ApiError(detail, status);
   }
   return response.json();
 }

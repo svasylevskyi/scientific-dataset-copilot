@@ -20,6 +20,15 @@
 		reverse_proxy api:8000 {
 			# Do not pass the tester gate credentials to the application.
 			header_up -Authorization
+			# Only the tester gate should challenge browser HTTP authentication.
+			header_down -WWW-Authenticate
+			@app_signed_out status 401
+			handle_response @app_signed_out {
+				# An upstream 401 would evict the browser's valid Basic credentials.
+				# Preserve the app meaning for our client without another gate prompt.
+				header X-SDC-App-Status 401
+				copy_response 403
+			}
 		}
 	}
 	handle {

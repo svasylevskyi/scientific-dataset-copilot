@@ -50,10 +50,21 @@ def main():
         except urllib.error.HTTPError as error:
             return error
 
-    assert request("/", gate=False).status == 401, "App must require the tester gate"
-    assert request("/api/v1/health", gate=False).status == 401, (
-        "API must require the tester gate"
-    )
+    for path in ["/", "/api/v1/health"]:
+        response = request(path, gate=False)
+        assert response.status == 401, "App and API must require the tester gate"
+        assert response.headers.get("WWW-Authenticate", "").startswith("Basic ")
+        assert response.headers.get("X-SDC-App-Status") is None
+
+    def assert_signed_out():
+        response = request("/api/v1/auth/me")
+        assert response.status == 403, "App sign-out must not evict Basic credentials"
+        assert response.headers.get("X-SDC-App-Status") == "401"
+        assert response.headers.get("WWW-Authenticate") is None
+        assert response.headers.get("Content-Type", "").startswith("application/json")
+        assert json.load(response)["detail"] == "Please sign in to continue."
+
+    assert_signed_out()
     assert b'<div id="root">' in request("/").read(), "Compiled frontend is missing"
     assert json.load(request("/api/v1/ready"))["status"] == "ready"
     assert request("/api/v1/reference.csv").status == 200
@@ -96,7 +107,7 @@ def main():
     assert request("/api/v1/workspaces/" + account["workspace"]["id"]).status == 200
     assert request("/api/v1/auth/me").status == 200
     assert request("/api/v1/auth/logout", {}).status == 200
-    assert request("/api/v1/auth/me").status == 401
+    assert_signed_out()
     # No database dump content is printed or modified by this check.
     assert any(Path("backups/development").glob("*.dump")), (
         "Pre-migration backup is missing"
