@@ -183,6 +183,19 @@ normal signup/login. The gate is separate from an application account. The built
 frontend is served by Caddy; no Vite development server is exposed. Secure cookies
 and the exact HTTPS Origin are configured automatically.
 
+Within the same browser session, refreshing the page or signing out of the app
+should not ask for the tester password again. A fresh browser session may prompt
+again. Only the gate returns an HTTP Basic authentication challenge. The gateway
+transports an application's `401` response as `403` with `X-SDC-App-Status: 401`,
+preserving the JSON body; the frontend restores its normal sign-in/session-error
+handling. This prevents application sign-out responses from clearing the browser's
+cached gate credentials. Ordinary permission-denied `403` responses stay unchanged.
+The backend's direct API still uses its normal status codes.
+
+Deploy both the gateway and built frontend together with `deploy.sh` when updating
+this behavior. Existing tester credentials and database settings remain valid;
+do not rerun `configure.py` for an update.
+
 ## 5. Mailpit and acceptance test
 
 Open an SSH tunnel from Windows PowerShell and leave it running:
@@ -210,6 +223,9 @@ This prompts for the gate password, verifies the real TLS certificate, exercises
 CSRF protection, creates an example.com test account, reads its email from local
 Mailpit, and checks Secure cookies and logout. It leaves that test account in the
 development database. CI performs the same check using Caddy's localhost CA.
+CI also counts actual browser authentication challenges on desktop and mobile,
+checking that one gate login survives reloads, a wrong app password, a missing app
+session cookie, and logout. Missing and incorrect gate credentials remain blocked.
 
 To grant the first app administrator after verifying that account:
 
