@@ -10,12 +10,15 @@ The app provides a verified NOAA reference analysis and query planner, plus
 persistent accounts and personal workspaces. Users can register, verify their
 email, sign in, recover or change a password, update their profile/email, and
 review or revoke sessions. Administrators manage free plans and account assignments;
-members can view their plan and usage. A local email inbox makes these flows testable.
+members can view their plan and usage. Members can save NOAA queries, start durable
+background analyses, inspect run history and export private results. A local email
+inbox makes account flows testable.
 
 **This is a local development app, not a launch-ready subscription service.**
-Saved analyses, background execution, AI assistance and paid billing follow in
-the [self-service SaaS roadmap](docs/roadmap.md). Scientific HTTP endpoints still
-serve the frozen reference and metadata; only the explicit CLI retrieves live data.
+AI assistance and paid billing follow in the [self-service SaaS roadmap](docs/roadmap.md).
+The API persists jobs; a separate worker downloads bounded NOAA subsets and publishes
+results. The free reference and planner remain available without running a job.
+See [saved analyses and worker operation](docs/durable-analyses.md).
 
 ## Local setup
 
@@ -89,6 +92,18 @@ Vite proxies `/api` to the local API. Session cookies are HttpOnly and are never
 stored in browser local storage.
 `API_PROXY_TARGET` can change the development proxy target.
 
+### Start the analysis worker
+
+When running the API/frontend directly, start a third terminal in the repository
+root with the same environment:
+
+```powershell
+.\.venv\Scripts\python.exe -m app.analyses.worker
+```
+
+On Linux/macOS use `.venv/bin/python -m app.analyses.worker`. Full Compose starts it
+automatically. See [worker and storage details](docs/durable-analyses.md).
+
 ### Docker Compose
 
 Alternatively, with Docker running (Linux containers on Windows):
@@ -97,10 +112,10 @@ Alternatively, with Docker running (Linux containers on Windows):
 docker compose up --build
 ```
 
-Compose starts PostgreSQL, Mailpit, a one-shot migration service, the API and the
-frontend. All published ports bind to loopback; the credentials and mail inbox
+Compose starts PostgreSQL, Mailpit, a one-shot migration service, the API, the
+analysis worker and the frontend. All published ports bind to loopback; the credentials and mail inbox
 are for local development only. Stop with Ctrl+C, then `docker compose down`.
-The named PostgreSQL volume preserves accounts across restarts. **Do not use
+Named PostgreSQL and artifact volumes preserve accounts and results across restarts. **Do not use
 `docker compose down -v` unless you intend to delete the local database.**
 
 ### Try the complete account journey
@@ -133,7 +148,7 @@ Admin access does not grant access to another user's workspace. **Manage plans**
 provides plan editing, registration defaults, archiving and account assignment.
 **Plan and usage** shows the member's allowance and history. Migration `0002_plans`
 assigns existing accounts to an editable free Development plan (20 monthly analyses,
-one at a time). Live analysis execution comes next; reference previews use no quota.
+one at a time). Live analyses use this allowance; reference previews use no quota.
 See [plans and usage](docs/plans-and-usage.md) for policies and testing steps.
 
 See [account architecture and configuration](docs/accounts.md) for SMTP settings,

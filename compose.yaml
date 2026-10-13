@@ -40,6 +40,9 @@ services:
       SDC_DATABASE_URL: postgresql+psycopg://sdc:sdc_local@db:5432/sdc
       SDC_PUBLIC_URL: http://127.0.0.1:5173
       SDC_SMTP_HOST: mailpit
+      SDC_ARTIFACT_DIR: /app/artifacts/runs
+    volumes:
+      - analysis-artifacts:/app/artifacts:ro
     ports:
       - "127.0.0.1:8000:8000"
     depends_on:
@@ -52,6 +55,29 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+  worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      SDC_DATABASE_URL: postgresql+psycopg://sdc:sdc_local@db:5432/sdc
+      SDC_ARTIFACT_DIR: /app/artifacts/runs
+    command: ["python", "-m", "app.analyses.worker"]
+    init: true
+    stop_grace_period: 30s
+    mem_limit: 1536m
+    pids_limit: 64
+    volumes:
+      - analysis-artifacts:/app/artifacts
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-m", "app.analyses.worker", "--health"]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 6
   web:
     build:
       context: .
@@ -60,8 +86,14 @@ services:
       API_PROXY_TARGET: http://api:8000
     ports:
       - "127.0.0.1:5173:5173"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5173/api/v1/ready').then(r => { if (!r.ok) process.exit(1); }).catch(() => process.exit(1))"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
     depends_on:
       api:
         condition: service_healthy
 volumes:
+  analysis-artifacts:
   postgres-data:

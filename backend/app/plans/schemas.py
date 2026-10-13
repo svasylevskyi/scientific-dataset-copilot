@@ -63,5 +63,5 @@ class UsageView(BaseModel):
     concurrent_reserved: int
     can_reserve: bool
     blocked_reason: str | None
-    live_execution_available: Literal[False] = False
+    live_execution_available: Literal[True] = True
     recent: list[UsageRecord]

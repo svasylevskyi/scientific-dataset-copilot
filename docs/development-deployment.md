@@ -306,3 +306,17 @@ Sources: [Hetzner server creation](https://docs.hetzner.com/cloud/servers/gettin
 [Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/),
 [Caddy basic authentication](https://caddyserver.com/docs/caddyfile/directives/basic_auth),
 [Caddy proxy headers](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy#headers).
+
+## Live analysis worker (increment 4)
+
+Normal deployments now include the `worker` service and private `analysis-artifacts`
+volume. No `.env.development` changes are required. After deployment open **Your
+analyses**, save a Canary Islands query for January 2020, and start it. Check run
+history, chart and exports, then confirm one completed unit under **Plan and usage**.
+The worker requires outbound HTTPS access to the registered NOAA host.
+
+Inspect it with `bash deploy/development/compose.sh logs --tail=100 worker`. The
+worker stops before migrations and automatically recovers interrupted runs. Preserve
+and back up the artifact volume along with the database when moving the environment;
+the existing pre-deployment database dump does not include raw/result files.
+See [durable analysis operation](durable-analyses.md) for recovery and retention.

@@ -25,15 +25,17 @@ a local PostgreSQL database, migration step and Mailpit inbox. See
 
 Increment 3 persists free plans, default registration assignments, workspace access
 status, analysis reservations, usage events and separate processing expenses. Plan
-administration and the member usage page are available; execution remains disabled.
+administration and the member usage page are available; increment 4 connects these
+to durable execution.
 The worker must call the internal entitlement service within the job transaction.
 See [plan and usage contracts](plans-and-usage.md).
 
-A modular monolith with a separate worker, PostgreSQL, object storage, and a task
-queue. Initial worker candidate: Celery/Redis; finalize durable delivery/lease
-semantics in increment 4 after reviewing Radar's current PostgreSQL-backed worker.
-The database remains authoritative for run state and usage accounting regardless
-of transport. No distributed microservice platform is needed initially.
+A modular monolith with a separate worker and PostgreSQL-backed job queue.
+Increment 4 uses SKIP LOCKED claims, renewable leases and attempt fencing, with
+shared private filesystem storage on the development server. Result publication
+and usage settlement share one transaction. The storage adapter can later target
+object storage if the deployment requires multiple hosts. No Redis/Celery service
+is needed for this first bounded workload. See [durable analyses](durable-analyses.md).
 
 Use PostgreSQL in development, tests, and production once persistence is introduced.
 Use SQLAlchemy/Alembic; migrations are versioned and checked in CI. Do not develop

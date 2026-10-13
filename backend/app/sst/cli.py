@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from datetime import UTC, date, datetime
@@ -26,6 +27,8 @@ from app.sst.processing import aggregate, load_subset, method_sha256, monthly_cs
 
 
 def revision() -> str:
+    if os.getenv("SDC_SOURCE_REVISION"):
+        return os.environ["SDC_SOURCE_REVISION"]
     try:
         root = Path(__file__).resolve().parents[3]
         value = subprocess.check_output(
@@ -39,14 +42,18 @@ def revision() -> str:
         return "unknown"
 
 
-def run(request: AnalysisRequest, output: Path) -> AnalysisResult:
+def run(
+    request: AnalysisRequest, output: Path, *, progress=None, fetcher=fetch_bytes
+) -> AnalysisResult:
     output.mkdir(parents=True, exist_ok=False)
+    report = progress or (lambda stage, message: None)
     start_time = monotonic()
     timeout = httpx.Timeout(60, connect=10)
     with httpx.Client(
         timeout=timeout, headers={"User-Agent": "ScientificDatasetCopilot/0.1"}
     ) as client:
-        raw_metadata = fetch_bytes(client, METADATA_URL, MAX_METADATA_BYTES)
+        report("metadata", "Checking current NOAA metadata and source coverage.")
+        raw_metadata = fetcher(client, METADATA_URL, MAX_METADATA_BYTES)
         fetched_at = datetime.now(UTC)
         write_new(output / "metadata.json", raw_metadata)
         plan = plan_query(request, raw_metadata, fetched_at)
@@ -58,10 +65,9 @@ def run(request: AnalysisRequest, output: Path) -> AnalysisResult:
             if monotonic() - start_time > 600:
                 raise SourceError("Run exceeded the ten-minute budget; retained partial artifacts.")
             print(f"Fetching {chunk.start} to {chunk.end}", file=sys.stderr, flush=True)
+            report(f"download_{i + 1:02}", f"Downloading {chunk.start} to {chunk.end}.")
             started = monotonic()
-            raw = fetch_bytes(
-                client, chunk.url, min(MAX_CHUNK_BYTES, MAX_TOTAL_BYTES - total_bytes)
-            )
+            raw = fetcher(client, chunk.url, min(MAX_CHUNK_BYTES, MAX_TOTAL_BYTES - total_bytes))
             duration = monotonic() - started
             total_bytes += len(raw)
             name = f"subset-{i + 1:02}.nc"
@@ -77,6 +83,7 @@ def run(request: AnalysisRequest, output: Path) -> AnalysisResult:
                 )
             )
             arrays.append(load_subset(path, plan, chunk))
+    report("processing", "Validating coverage and computing area-weighted monthly means.")
     result = AnalysisResult(
         plan=plan,
         created_at=datetime.now(UTC),

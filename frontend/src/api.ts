@@ -11,6 +11,10 @@ export type Plan = components['schemas']['PlanView'];
 export type AdminPlan = components['schemas']['AdminPlanView'];
 export type PlanInput = components['schemas']['PlanInput'];
 export type Usage = components['schemas']['UsageView'];
+export type SavedAnalysis = components['schemas']['AnalysisView'];
+export type AnalysisInput = components['schemas']['AnalysisInput'];
+export type AnalysisRun = components['schemas']['RunView'];
+export type RunDetail = components['schemas']['RunDetail'];
 
 export class ApiError extends Error {
   constructor(message: string, public status: number) { super(message); }

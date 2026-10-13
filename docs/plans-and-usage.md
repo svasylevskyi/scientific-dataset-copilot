@@ -29,9 +29,9 @@ independent safety limits still apply.
 5. Archive a non-default plan. It disappears from assignment choices while existing
    members retain access. Activate it to accept new assignments again.
 
-There is no live execution button yet. Usage remains zero until the worker increment
-calls the internal admission service. The UI states this explicitly. Retention
-values are recorded for future runs; no artifact-deletion worker is introduced here.
+Increment 4 connects these limits to **Your analyses**. Starting a run reserves one
+unit and persists the job atomically; the worker settles the confirmed outcome and
+enforces the reservation's artifact retention. See [durable analyses](durable-analyses.md).
 
 ## Plan policy
 
@@ -104,6 +104,6 @@ concurrent admission against monthly/concurrency limits, duplicate terminal even
 rollback, cost idempotency, and UTC year/month rollover. CI runs the real admin/member
 journey at desktop/mobile sizes and checks plan assignment through the HTTPS gateway.
 
-The database remains authoritative; UI counters are informational. The next worker
-increment must connect admission, job persistence, lease recovery, cost reporting
-and artifact retention before enabling live runs.
+The database remains authoritative; UI counters are informational. Increment 4
+connects admission, job persistence, lease recovery, measured run timings and
+artifact retention. Dollar expense reporting requires an attributable cost source.

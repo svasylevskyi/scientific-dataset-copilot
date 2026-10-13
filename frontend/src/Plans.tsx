@@ -57,10 +57,10 @@ function UsageDetails() {
         <Typography variant="body2" sx={{ mt: 2 }}>{data.concurrent_reserved} of {data.plan.concurrent_analyses} simultaneous slots reserved · Up to {data.plan.max_date_range_days.toLocaleString()} days per analysis · Results retained for {data.plan.retention_days} days.</Typography>
         {data.blocked_reason && <Alert severity="warning" sx={{ mt: 2 }}>{data.blocked_reason}</Alert>}
       </Paper>
-      <Alert severity="info" sx={{ mb: 3 }}>Live analyses are coming next. The reference analysis and query previews do not use your allowance. Analysis and retention limits will apply when live runs become available.</Alert>
+      <Alert severity="info" sx={{ mb: 3 }}>Run saved queries from Your analyses. The reference analysis and query previews do not use your allowance. Results expire according to the retention limit recorded when each run starts.</Alert>
       <Paper className="panel">
         <Typography variant="h6" component="h2">How usage works</Typography>
-        <Typography>Each new analysis reserves one place in your monthly allowance. Successful runs count as completed; failed or cancelled runs release their reservation. Retrying the same run does not count twice.</Typography>
+        <Typography>Each new analysis reserves one place in your monthly allowance. Successful runs count as completed; failed or cancelled runs release their reservation. Automatic retries of the same run do not count twice; starting another run creates a new reservation.</Typography>
         <Typography sx={{ mt: 1 }}>Allowances reset each calendar month in UTC, with no rollover. A run that spans two months counts in the month it was started. Pending runs still occupy a simultaneous slot.</Typography>
       </Paper>
       <Paper className="panel">

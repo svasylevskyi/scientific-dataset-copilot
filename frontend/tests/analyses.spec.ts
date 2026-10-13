@@ -1,0 +1,68 @@
+import { execFileSync } from 'node:child_process';
+import { expect, test } from '@playwright/test';
+
+test.skip(!process.env.SDC_ACCOUNT_E2E, 'Analysis journey requires PostgreSQL and Mailpit');
+test.use({ actionTimeout: 10000 });
+const headers = { Origin: 'http://127.0.0.1:5173', 'X-SDC-Request': '1' };
+
+test('save, run, reload, export, edit and cancel an analysis', async ({ page, request }, testInfo) => {
+  test.setTimeout(60000);
+  const email = `analysis-${testInfo.project.name}-${Date.now()}@example.com`;
+  const password = 'A scientific browser passphrase!';
+  expect((await request.post('/api/v1/auth/register', { headers, data: { name: 'Explorer', email, password } })).status()).toBe(202);
+  let token = '';
+  await expect.poll(async () => {
+    const messages = (await (await request.get('http://127.0.0.1:8025/api/v1/search', { params: { query: `to:${email}` } })).json()).messages;
+    if (!messages?.length) return false;
+    const mail = await (await request.get(`http://127.0.0.1:8025/api/v1/message/${messages[0].ID}`)).json();
+    token = String(mail.Text).match(/\/#\/verify\?token=([A-Za-z0-9_-]+)/)?.[1] ?? '';
+    return Boolean(token);
+  }).toBeTruthy();
+  expect((await request.post('/api/v1/auth/verify', { headers, data: { token } })).status()).toBe(200);
+  await page.goto('/#/signin');
+  const main = page.getByRole('main');
+  await main.getByLabel(/^Email(?:\s*\*)?$/).fill(email);
+  await main.getByLabel(/^Password(?:\s*\*)?$/).fill(password);
+  await main.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await expect(main.getByRole('heading', { name: 'Your account', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Your analyses', exact: true }).click();
+  await main.getByRole('button', { name: 'New analysis', exact: true }).click();
+  await main.getByRole('textbox', { name: 'Analysis title', exact: true }).fill('Canaries January 2020');
+  await main.getByLabel(/^To(?:\s*\*)?$/).fill('2020-01-31');
+  await main.getByRole('button', { name: 'Save analysis', exact: true }).click();
+  await expect(main.getByRole('heading', { name: 'Canaries January 2020', exact: true })).toBeVisible();
+  const savedUrl = page.url();
+  await main.getByRole('button', { name: 'Run analysis', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Start run', exact: true }).click();
+  const detail = main.getByRole('region', { name: 'Selected run' });
+  await expect(detail.getByText('queued', { exact: true })).toBeVisible();
+  const runUrl = page.url();
+  await page.reload();
+  await expect(detail.getByText('queued', { exact: true })).toBeVisible();
+  // Real separate worker + scientific child; checked-in NOAA bytes replace only transport.
+  execFileSync('python', ['backend/tests/analysis_fixture_worker.py', '--once'], { cwd: '..', timeout: 30000, encoding: 'utf8' });
+  await expect(detail.getByText('succeeded', { exact: true })).toBeVisible({ timeout: 15000 });
+  await expect(main.getByRole('heading', { name: 'Monthly sea surface temperature', exact: true })).toBeVisible();
+  const csvUrl = await main.getByRole('link', { name: 'Download CSV', exact: true }).getAttribute('href');
+  const csv = await page.request.get(csvUrl!);
+  expect(csv.status()).toBe(200); expect(await csv.text()).toContain('2020-01-01');
+  await expect(main.getByText(/19 analyses remaining this month/)).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
+  await page.screenshot({ path: testInfo.outputPath('analysis-result.png'), fullPage: true });
+  await page.reload();
+  await expect(main.getByRole('heading', { name: 'Monthly sea surface temperature', exact: true })).toBeVisible();
+  await main.getByRole('button', { name: 'Edit query', exact: true }).click();
+  await main.getByLabel(/^To(?:\s*\*)?$/).fill('2020-02-29');
+  await main.getByRole('button', { name: 'Save analysis', exact: true }).click();
+  await page.goto(runUrl);
+  await expect(detail.getByText('Canaries January 2020 · 2020-01-01 to 2020-01-31')).toBeVisible();
+  await page.goto(savedUrl);
+  await main.getByRole('button', { name: 'Run analysis', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Start run', exact: true }).click();
+  await expect(detail.getByText('queued', { exact: true })).toBeVisible();
+  await detail.getByRole('button', { name: 'Cancel run', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Confirm cancellation', exact: true }).click();
+  await expect(detail.getByText('cancelled', { exact: true })).toBeVisible();
+  const usage = await (await page.request.get('/api/v1/account/usage')).json();
+  expect(usage.consumed).toBe(1); expect(usage.reserved).toBe(0);
+});
