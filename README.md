@@ -134,6 +134,15 @@ administration belongs to the next increments.
 See [account architecture and configuration](docs/accounts.md) for SMTP settings,
 session semantics and deployment boundaries.
 
+## Hosted development environment
+
+A separate Ubuntu/Hetzner setup is available with a compiled frontend, HTTPS,
+a tester password gate, private PostgreSQL/SMTP and Mailpit through an SSH tunnel.
+Follow [the development deployment guide](docs/development-deployment.md).
+It runs Docker Engine on the server; your Windows PC does not need Docker Desktop.
+Use `deploy/development/compose.sh` for this environment; the root `compose.yaml`
+continues to serve local development.
+
 ## Run a live reference analysis
 
 With the virtual environment activated, from the repository root:

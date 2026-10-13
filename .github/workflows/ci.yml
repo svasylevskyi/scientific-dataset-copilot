@@ -169,3 +169,40 @@ jobs:
           name: account-browser-evidence
           path: frontend/test-results
           retention-days: 7
+
+  development-deployment:
+    name: Protected development deployment
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check deployment script syntax
+        run: |
+          bash -n deploy/development/*.sh
+          python3 -m py_compile deploy/development/configure.py deploy/development/smoke.py
+      - name: Configure and deploy disposable development stack
+        run: |
+          printf '%s\n%s\n' 'CI-only tester gate password!' 'CI-only tester gate password!' | python3 deploy/development/configure.py localhost
+          bash deploy/development/deploy.sh
+      - name: Verify HTTPS, private services, account cookies and SMTP capture
+        timeout-minutes: 2
+        run: |
+          for attempt in {1..20}; do
+            if bash deploy/development/compose.sh cp web:/data/caddy/pki/authorities/local/root.crt "$RUNNER_TEMP/sdc-dev-root.crt"; then break; fi
+            sleep 1
+          done
+          printf '%s' 'CI-only tester gate password!' | python3 deploy/development/smoke.py https://localhost --ca-file "$RUNNER_TEMP/sdc-dev-root.crt"
+          python3 - <<'PY'
+          import json, subprocess
+          config = json.loads(subprocess.check_output(['bash', 'deploy/development/compose.sh', 'config', '--format', 'json']))
+          for name in ['api', 'db', 'migrate']:
+              assert not config['services'][name].get('ports'), f'{name} must have no host port'
+          ports = config['services']['mailpit']['ports']
+          assert len(ports) == 1 and ports[0]['host_ip'] == '127.0.0.1' and ports[0]['target'] == 8025
+          PY
+      - name: Deployment logs on failure
+        if: failure()
+        run: bash deploy/development/compose.sh logs --tail=100
+      - name: Stop disposable stack
+        if: always()
+        run: bash deploy/development/compose.sh down

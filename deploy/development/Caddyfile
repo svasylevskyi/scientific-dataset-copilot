@@ -1,0 +1,30 @@
+{
+	servers {
+		protocols h1 h2
+	}
+}
+
+{$SDC_DOMAIN} {
+	# The separate tester password gate covers both the app and API.
+	basic_auth {
+		import /run/secrets/development_users
+	}
+	encode zstd gzip
+	header {
+		X-Robots-Tag "noindex, nofollow"
+		Referrer-Policy "no-referrer"
+		X-Content-Type-Options "nosniff"
+	}
+	@api path /api/* /docs /docs/* /openapi.json
+	handle @api {
+		reverse_proxy api:8000 {
+			# Do not pass the tester gate credentials to the application.
+			header_up -Authorization
+		}
+	}
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

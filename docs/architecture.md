@@ -77,3 +77,12 @@ Small PRs target `main`; Stepan reviews and merges. CI tests scientific calculat
 API contracts, frontend builds and main browser flows. Live source verification is
 explicit and separate from deterministic CI. Production releases and paid-service
 configuration follow their own acceptance gates; feature PRs do not deploy either.
+
+## Hosted development testing
+
+The development server uses the standalone `compose.development.yaml`: Caddy
+serves compiled assets and proxies the API over HTTPS, with a tester password gate.
+PostgreSQL and SMTP have no host ports, and Mailpit's inbox is loopback-only for
+SSH access. Deployment takes a database dump before applying migrations. This
+is an early development deployment to support testing, distinct from the paid
+production launch gate. See [the runbook](development-deployment.md).

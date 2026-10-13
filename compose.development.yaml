@@ -1,0 +1,136 @@
+# Standalone server deployment; do not combine with the local compose.yaml.
+name: sdc-development
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: '3'
+
+x-api-environment: &api-environment
+  SDC_DATABASE_URL: postgresql+psycopg://sdc:${SDC_DB_PASSWORD:?Run the development configure script}@db:5432/sdc
+  SDC_PUBLIC_URL: https://${SDC_DOMAIN:?Set the development hostname}
+  SDC_SECURE_COOKIES: 'true'
+  SDC_SMTP_HOST: mailpit
+  SDC_SMTP_PORT: '1025'
+  SDC_SMTP_STARTTLS: 'false'
+
+services:
+  db:
+    image: postgres:17.11
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sdc
+      POSTGRES_PASSWORD: ${SDC_DB_PASSWORD:?Run the development configure script}
+      POSTGRES_DB: sdc
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks: [backend]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U sdc -d sdc']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    logging: *logging
+
+  mailpit:
+    image: axllent/mailpit:v1.31.5
+    restart: unless-stopped
+    environment:
+      MP_DATABASE: /data/mailpit.db
+      MP_DISABLE_VERSION_CHECK: 'true'
+      MP_MAX_MESSAGES: '200'
+      MP_MAX_AGE: 7d
+      MP_ALLOWED_HOSTS: localhost,127.0.0.1
+    volumes:
+      - mailpit-data:/data
+    # The inbox is reachable only from the server or through an SSH tunnel.
+    ports:
+      - '127.0.0.1:8025:8025'
+    networks: [backend]
+    logging: *logging
+
+  migrate:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment: *api-environment
+    command: [python, -m, alembic, -c, backend/alembic.ini, upgrade, head]
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [backend]
+    logging: *logging
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    environment: *api-environment
+    # Only Caddy's fixed private address is trusted to supply client IPs.
+    command:
+      - python
+      - -m
+      - uvicorn
+      - app.main:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - '8000'
+      - --proxy-headers
+      - --forwarded-allow-ips
+      - 172.30.88.10
+    depends_on:
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    networks: [backend, proxy]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/ready')"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    logging: *logging
+
+  web:
+    build:
+      context: .
+      dockerfile: deploy/development/Dockerfile
+    restart: unless-stopped
+    environment:
+      SDC_DOMAIN: ${SDC_DOMAIN:?Set the development hostname}
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
+    secrets:
+      - development_users
+    networks:
+      proxy:
+        ipv4_address: 172.30.88.10
+    depends_on:
+      api:
+        condition: service_healthy
+    logging: *logging
+
+secrets:
+  development_users:
+    file: ./deploy/development/secrets/users.caddy
+
+volumes:
+  postgres-data:
+  mailpit-data:
+  caddy-data:
+  caddy-config:
+
+networks:
+  backend:
+    internal: true
+  proxy:
+    ipam:
+      config:
+        - subnet: 172.30.88.0/24

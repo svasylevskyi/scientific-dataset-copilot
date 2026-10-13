@@ -9,3 +9,8 @@
 artifacts
 **/test-results
 **/playwright-report
+
+**/.env.*
+deploy/development/secrets
+backups
+.development-deploy.lock
