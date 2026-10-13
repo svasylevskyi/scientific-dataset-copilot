@@ -15,6 +15,15 @@ x-api-environment: &api-environment
   SDC_SMTP_PORT: '1025'
   SDC_SMTP_STARTTLS: 'false'
 
+# Validate the exact image and secret that will be used by the gateway.
+x-web-runtime: &web-runtime
+  image: sdc-development-web:local
+  environment:
+    SDC_DOMAIN: ${SDC_DOMAIN:?Set the development hostname}
+  secrets:
+    - development_users
+  logging: *logging
+
 services:
   db:
     image: postgres:17.11
@@ -95,28 +104,32 @@ services:
       retries: 12
     logging: *logging
 
+  web-validate:
+    <<: *web-runtime
+    profiles: [tools]
+    # A one-off `run web` would claim the live gateway's static IP address.
+    # Validation needs neither networking nor the live certificate volumes.
+    network_mode: none
+    command: [caddy, validate, --config, /etc/caddy/Caddyfile]
+
   web:
+    <<: *web-runtime
     build:
       context: .
       dockerfile: deploy/development/Dockerfile
     restart: unless-stopped
-    environment:
-      SDC_DOMAIN: ${SDC_DOMAIN:?Set the development hostname}
     ports:
       - '80:80'
       - '443:443'
     volumes:
       - caddy-data:/data
       - caddy-config:/config
-    secrets:
-      - development_users
     networks:
       proxy:
         ipv4_address: 172.30.88.10
     depends_on:
       api:
         condition: service_healthy
-    logging: *logging
 
 secrets:
   development_users:

@@ -223,7 +223,8 @@ This prompts for the gate password, verifies the real TLS certificate, exercises
 CSRF protection, creates an example.com test account, reads its email from local
 Mailpit, and checks Secure cookies and logout. It leaves that test account in the
 development database. CI performs the same check using Caddy's localhost CA.
-CI also counts actual browser authentication challenges on desktop and mobile,
+CI also redeploys an already running stack and counts actual browser authentication
+challenges on desktop and mobile,
 checking that one gate login survives reloads, a wrong app password, a missing app
 session cookie, and logout. Missing and incorrect gate credentials remain blocked.
 
@@ -238,14 +239,38 @@ bash deploy/development/compose.sh exec api python -m app.accounts.cli promote Y
 Deploy reviewed commits from `main` manually for this first environment:
 
 ```bash
-git pull --ff-only
-bash deploy/development/deploy.sh
+git pull --ff-only && bash deploy/development/deploy.sh
 ```
 
 Do not reuse the local `docker compose up` command here: the wrapper selects the
 standalone server configuration. Updates do not delete persistent volumes. A
 reboot restarts the long-running services via Docker's restart policy. Database
 migrations run explicitly during deployment, not on every process restart.
+
+The candidate gateway image is checked by the `web-validate` helper, with networking
+disabled and without access to the live certificate volumes. It uses the same
+image, hostname and tester credentials as `web`. Do not validate with
+`compose.sh run web`: that creates a second container requesting the running
+gateway's fixed IP, which fails with `Address already in use` on repeat deployments.
+The app is stopped only after the isolated validation and database backup succeed.
+
+A deployment is complete only when the script prints
+`Development deployment completed for commit ...` and exits successfully. A build
+finishing does not mean the running containers have been updated. On failure, the
+script reports which stage failed. If an earlier version hit the validator IP
+conflict, pull the fix and rerun the deployment; no volume cleanup or password reset
+is required.
+
+To verify the gate fix on the running server (enter the existing tester password):
+
+```bash
+curl -i --user tester https://scientific-dataset-copilot.duckdns.org/api/v1/auth/me
+```
+
+With correct tester credentials and no app session cookie, expect HTTP `403`,
+`X-SDC-App-Status: 401`, and the JSON sign-in message. HTTP `401` with a Basic
+challenge means the tester credentials were rejected; an unmarked application
+`401` means the old gateway is still serving requests.
 
 Each deployment saves a pre-migration custom-format PostgreSQL dump in
 `backups/development/`. Keep a copy off-server if test data becomes valuable and

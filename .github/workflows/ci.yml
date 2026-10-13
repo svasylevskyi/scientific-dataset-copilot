@@ -52,6 +52,9 @@ jobs:
           git diff --exit-code -- backend/openapi.json frontend/src/api.generated.ts
           npm --prefix frontend run build
       - name: Install browser system dependencies
+        # Chromium's headless tests do not need Windows Media Foundation.
+        # Installing that optional feature costs 3+ minutes on hosted Windows.
+        if: runner.os == 'Linux'
         timeout-minutes: 4
         working-directory: frontend
         run: node node_modules/playwright/cli.js install-deps chromium
@@ -188,6 +191,15 @@ jobs:
       - name: Configure and deploy disposable development stack
         run: |
           printf '%s\n%s\n' 'CI-only tester gate password!' 'CI-only tester gate password!' | python3 deploy/development/configure.py localhost
+          bash deploy/development/deploy.sh
+      - name: Redeploy with the gateway already running
+        run: |
+          web_id=$(bash deploy/development/compose.sh ps -q web)
+          web_started=$(docker inspect --format '{{.State.StartedAt}}' "$web_id")
+          bash deploy/development/compose.sh run --rm --no-deps --pull never web-validate
+          test "$(docker inspect --format '{{.State.StartedAt}}' "$web_id")" = "$web_started"
+          curl --silent --show-error --output /dev/null --write-out '%{http_code}' --insecure https://localhost | grep -qx 401
+          # Exercise the real update path, not only a fresh installation.
           bash deploy/development/deploy.sh
       - name: Verify HTTPS, private services, account cookies and SMTP capture
         timeout-minutes: 2

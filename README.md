@@ -194,7 +194,14 @@ drift and the same backend/build/browser checks. Python dependencies are pinned
 in `backend/requirements.lock`; JavaScript dependencies in `frontend/package-lock.json`.
 
 CI reports browser system dependencies, browser download, and test execution as
-separate steps. It downloads only Chromium's headless shell, bounds installation
+separate steps. System dependency installation runs only on Linux: the Windows
+headless Chromium suite does not need the optional Media Foundation feature,
+which previously added more than three minutes to each Windows job. Windows still
+runs the complete scientific, API, frontend-build and reference-browser checks.
+The development deployment job covers both a fresh install and an update while
+the old gateway is running, followed by HTTPS and tester-gate browser checks.
+
+CI limits browser installation to the headless shell, caps dependency/download
 steps to 4 minutes, and gives the test suite 2 minutes to finish and report errors
 before the 3-minute test-step limit. Download diagnostics and per-test progress
 remain visible in the job log. Desktop and mobile coverage includes the account journey in a separate Linux job
