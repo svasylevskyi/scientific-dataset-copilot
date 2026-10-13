@@ -47,9 +47,9 @@ def main():
     # Caddy reads stdin when --plaintext is omitted. No password in process listings/history.
     result = subprocess.run(
         ["docker", "run", "--rm", "-i", CADDY_IMAGE, "caddy", "hash-password"],
-        input=password,
+        input=password + "\n",
         text=True,
-        capture_output=True,
+        stdout=subprocess.PIPE,
         check=True,
     )
     password_hash = result.stdout.strip()

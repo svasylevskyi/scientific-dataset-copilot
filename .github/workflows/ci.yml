@@ -178,7 +178,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check deployment script syntax
         run: |
-          bash -n deploy/development/*.sh
+          for script in deploy/development/*.sh; do bash -n "$script"; done
           python3 -m py_compile deploy/development/configure.py deploy/development/smoke.py
       - name: Configure and deploy disposable development stack
         run: |
