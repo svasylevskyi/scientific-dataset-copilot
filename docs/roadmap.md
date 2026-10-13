@@ -18,6 +18,11 @@ atomically, reconcile on terminal job state, and distinguish customer quota from
 actual provider/compute expense. Trial or default registration plans must not
 accidentally grant unpaid access to a mapped paid subscription.
 
+Increment 2 implementation includes local SMTP capture, profile and verified email
+changes, session management, explicit admin bootstrap, PostgreSQL migration checks,
+and account isolation/concurrency/browser tests. See [accounts](accounts.md).
+Increment 3 is next after review and acceptance.
+
 ### Later increments
 
 Prioritize based on self-service user demand: two-region comparison, additional
@@ -34,4 +39,4 @@ Research Radar integration comes after independent product viability.
 4. Before accepting money: business/billing identity, applicable customer policies,
    configured Stripe products/prices and live webhook acceptance.
 
-No paid account setup is required for increment 1.
+No paid account setup is required for increments 1–2; email is captured locally.

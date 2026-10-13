@@ -43,7 +43,7 @@ jobs:
         run: |
           python -m ruff check backend
           python -m ruff format --check backend
-          python -m pytest backend/tests -q
+          python -m pytest backend/tests -q -m "not postgres"
       - name: Frontend and generated API contract
         run: |
           npm --prefix frontend ci
@@ -81,9 +81,11 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Build and smoke-test local preview containers
+      - name: Build and smoke-test local containers
         run: |
           docker compose up -d --build --wait
+          curl --fail http://127.0.0.1:5173/api/v1/ready
+          curl --fail http://127.0.0.1:8025/livez
           curl --fail --retry 10 --retry-delay 2 --retry-connrefused http://127.0.0.1:5173/api/v1/health
           curl --fail --output /dev/null http://127.0.0.1:5173/api/v1/reference.csv
       - name: Container logs on failure
@@ -92,3 +94,78 @@ jobs:
       - name: Stop containers
         if: always()
         run: docker compose down
+
+  accounts:
+    name: PostgreSQL accounts and browser journey
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17.11
+        env:
+          POSTGRES_USER: sdc
+          POSTGRES_PASSWORD: sdc_test
+          POSTGRES_DB: sdc_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U sdc -d sdc_test"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+      mailpit:
+        image: axllent/mailpit:v1.31.5
+        ports:
+          - 1025:1025
+          - 8025:8025
+    env:
+      SDC_DATABASE_URL: postgresql+psycopg://sdc:sdc_test@127.0.0.1:5432/sdc_test
+      SDC_TEST_DATABASE_URL: postgresql+psycopg://sdc:sdc_test@127.0.0.1:5432/sdc_test
+      SDC_ACCOUNT_E2E: '1'
+      SDC_PUBLIC_URL: http://127.0.0.1:5173
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: backend/requirements.lock
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        run: |
+          python -m pip install -r backend/requirements.lock
+          python -m pip install --no-deps --no-build-isolation -e ./backend
+          npm --prefix frontend ci
+      - name: Migrations, isolation, session lifecycle and concurrency
+        timeout-minutes: 3
+        run: |
+          python -m alembic -c backend/alembic.ini upgrade head
+          python -m pytest backend/tests/test_accounts.py -q
+          python -m alembic -c backend/alembic.ini check
+      - name: Install browser system dependencies
+        timeout-minutes: 4
+        working-directory: frontend
+        run: node node_modules/playwright/cli.js install-deps chromium
+      - name: Install Chromium headless shell
+        timeout-minutes: 4
+        working-directory: frontend
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/sdc-playwright
+          PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT: '30000'
+          DEBUG: pw:install
+        run: node node_modules/playwright/cli.js install --only-shell chromium
+      - name: Account journey with real PostgreSQL and email delivery
+        timeout-minutes: 3
+        working-directory: frontend
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/sdc-playwright
+        run: npm run test:e2e -- accounts.spec.ts
+      - name: Upload account browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: account-browser-evidence
+          path: frontend/test-results
+          retention-days: 7

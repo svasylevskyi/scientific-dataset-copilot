@@ -60,3 +60,10 @@ footer { font-size: 11px; color: #6c7e7c; padding: 12px 0 4px; }
   .chart-panel { padding: 20px 10px; }
   .chart-panel .title-row { padding: 0 10px; }
 }
+
+.auth-screen { max-width: 540px; margin: 12px auto; }
+.account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.account-nav { margin-top: 20px; }
+.session-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; }
+@media (max-width: 1050px) { .account-grid { grid-template-columns: 1fr; gap: 0; } }
+@media (max-width: 760px) { .account-nav { margin-top: 8px; } .session-row { flex-wrap: wrap; } }

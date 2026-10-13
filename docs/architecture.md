@@ -8,8 +8,17 @@ query plans against its metadata snapshot. It never runs scientific work from an
 HTTP request. The explicit CLI downloads and processes bounded source subsets.
 
 The query planner, connector, and scientific calculation are separate modules with
-Pydantic contracts. Frontend types are generated from OpenAPI. There is no fabricated
-authentication, billing, AI, or persistence implementation in this first increment.
+Pydantic contracts. Frontend types are generated from OpenAPI. Billing and AI remain roadmap capabilities; accounts and persistence were added
+in increment 2.
+
+## Implemented in increment 2
+
+PostgreSQL/Alembic now persist accounts, personal workspaces, sessions, single-use
+email tokens and shared authentication rate limits. The account module supports
+verified registration, profile/security changes, recovery and owner-scoped access.
+The frontend includes account forms and active-session management. Compose adds
+a local PostgreSQL database, migration step and Mailpit inbox. See
+[account architecture](accounts.md) for transaction and security semantics.
 
 ## Target architecture
 
@@ -67,4 +76,4 @@ implementation must be inspected before any code is reused.
 Small PRs target `main`; Stepan reviews and merges. CI tests scientific calculations,
 API contracts, frontend builds and main browser flows. Live source verification is
 explicit and separate from deterministic CI. Production releases and paid-service
-configuration follow their own acceptance gates; this PR deploys neither.
+configuration follow their own acceptance gates; feature PRs do not deploy either.
