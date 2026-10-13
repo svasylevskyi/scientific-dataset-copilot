@@ -11,3 +11,8 @@ artifacts/
 *.egg-info/
 playwright-report/
 test-results/
+
+.env.development
+/deploy/development/secrets/
+/backups/
+.development-deploy.lock
