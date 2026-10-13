@@ -76,3 +76,9 @@ footer { font-size: 11px; color: #6c7e7c; padding: 12px 0 4px; }
 .session-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; }
 @media (max-width: 1050px) { .account-grid { grid-template-columns: 1fr; gap: 0; } }
 @media (max-width: 760px) { .account-nav { margin-top: 8px; } .session-row { flex-wrap: wrap; } }
+
+.analysis-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+.analysis-tabs a { max-width: 100%; overflow-wrap: anywhere; }
+.run-stages { margin-top: 24px; }
+.run-stages ol { padding-left: 22px; }
+.artifact-hash { display: block; overflow-wrap: anywhere; font-size: 11px; }

@@ -28,7 +28,7 @@ def test_reference_exports_and_query_preview_never_download(monkeypatch):
     assert response.status_code == 200
     assert response.json()["region"]["id"] == "madeira"
     catalog = client.get("/api/v1/catalog").json()
-    assert catalog["capabilities"]["live_web_execution"] is False
+    assert catalog["capabilities"]["live_web_execution"] is True
     assert catalog["capabilities"]["subscriptions"] is False
 
 
