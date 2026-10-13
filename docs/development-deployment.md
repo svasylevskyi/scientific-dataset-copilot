@@ -5,19 +5,27 @@ own server, database, credentials and email inbox, separate from Research Radar
 and any future production environment. Docker Engine and Compose run on Ubuntu;
 Docker Desktop is not required on the Windows client.
 
-## 1. Create the server
+## 1. Development server
 
-In the Hetzner project `scientific-dataset-copilot`:
+The existing server in Hetzner project `scientific-dataset-copilot` is:
 
-- Name: `sdc-dev-01`.
-- Location: Nuremberg; Helsinki is also suitable if capacity is unavailable.
-- Type: x86 CX23 (2 vCPU / 4 GB / 40 GB) for current development testing. Check the
-  console's availability and total before ordering. CX33 is a larger alternative.
-- Image: Ubuntu 24.04 LTS.
-- Networking: public IPv4 and IPv6. No additional volume or load balancer needed.
-- Authentication: a dedicated SSH public key. Keep its private key on your PC.
-- This is disposable test data initially; provider backup configuration is a
-  separate choice. The deployment's local dumps do not replace off-server backups.
+| Setting | Value |
+| --- | --- |
+| Location | Falkenstein |
+| Type | CPX22 |
+| Image | Ubuntu 26.04 LTS (Resolute) |
+| Public IPv4 | `2.31.42.230` |
+| Development hostname | `scientific-dataset-copilot.duckdns.org` |
+
+The Docker installer supports Ubuntu 24.04 and 26.04 and selects the matching
+official package repository from `/etc/os-release`. It refuses an unsupported
+release or mismatched codename before changing the host. Application Python and
+Node versions come from the container images and do not depend on the host's
+installed versions.
+
+Use a dedicated SSH public key and keep its private key on your PC. Initial data
+is disposable test data; provider backup configuration is a separate choice. The
+deployment's local dumps do not replace off-server backups.
 
 Create the SSH key in Windows PowerShell if it does not already exist:
 
@@ -52,10 +60,10 @@ Use Hetzner's browser console to inspect the host fingerprint:
 ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
 ```
 
-From Windows, substitute the actual public IPv4:
+From Windows PowerShell:
 
 ```powershell
-ssh -i "$env:USERPROFILE\.ssh\sdc-development" root@SERVER_IP
+ssh -i "$env:USERPROFILE\.ssh\sdc-development" root@2.31.42.230
 ```
 
 Compare the first-connection fingerprint with the console. In this root session:
@@ -64,6 +72,13 @@ Compare the first-connection fingerprint with the console. In this root session:
 apt-get update
 apt-get upgrade -y
 apt-get install -y git ca-certificates curl python3
+```
+
+If `/var/run/reboot-required` exists, reboot with `reboot`, wait for the server to
+return, and reconnect with the same SSH command before continuing. Then create
+the operator account:
+
+```bash
 adduser deploy
 usermod -aG sudo deploy
 install -d -m 0700 -o deploy -g deploy /home/deploy/.ssh
@@ -71,7 +86,7 @@ install -m 0600 -o deploy -g deploy /root/.ssh/authorized_keys /home/deploy/.ssh
 ```
 
 Choose a password for the `deploy` user's sudo access. Open another PowerShell
-window and verify `ssh -i "$env:USERPROFILE\.ssh\sdc-development" deploy@SERVER_IP`
+window and verify `ssh -i "$env:USERPROFILE\.ssh\sdc-development" deploy@2.31.42.230`
 and `sudo -v` work. Keep the root session open until this succeeds. Then in root:
 
 ```bash
@@ -125,15 +140,22 @@ administrative host access; grant it only to the operator account. Check
 
 ## 4. DNS and configuration
 
-Choose a development hostname under a domain you control, for example
-`copilot-dev.example.com`, and point its **A record** to the server IPv4. Start
-with DNS-only mode if your DNS provider has an HTTP proxy option. Add an AAAA
-record only when the corresponding IPv6 address and routing have been checked.
+The DuckDNS hostname `scientific-dataset-copilot.duckdns.org` should resolve to
+`2.31.42.230`. Confirm the A record from Windows:
+
+```powershell
+Resolve-DnsName scientific-dataset-copilot.duckdns.org -Type A
+```
+
+Add an AAAA record only when the corresponding IPv6 address and routing have been
+checked. If an old AAAA record exists, correct or remove it before issuing the
+certificate. No DuckDNS API token is needed by this stack; Caddy uses the public
+hostname and inbound ports 80/443 for certificate validation.
 
 Confirm it resolves to the server, then from the repository directory:
 
 ```bash
-python3 deploy/development/configure.py copilot-dev.example.com
+python3 deploy/development/configure.py scientific-dataset-copilot.duckdns.org
 bash deploy/development/deploy.sh
 ```
 
@@ -156,7 +178,7 @@ bash deploy/development/compose.sh ps
 bash deploy/development/compose.sh logs --tail=100 web api
 ```
 
-Open the HTTPS hostname, enter the tester gate credentials, then use the app's
+Open https://scientific-dataset-copilot.duckdns.org, enter the tester gate credentials, then use the app's
 normal signup/login. The gate is separate from an application account. The built
 frontend is served by Caddy; no Vite development server is exposed. Secure cookies
 and the exact HTTPS Origin are configured automatically.
@@ -166,7 +188,7 @@ and the exact HTTPS Origin are configured automatically.
 Open an SSH tunnel from Windows PowerShell and leave it running:
 
 ```powershell
-ssh -i "$env:USERPROFILE\.ssh\sdc-development" -N -L 18025:127.0.0.1:8025 deploy@SERVER_IP
+ssh -i "$env:USERPROFILE\.ssh\sdc-development" -N -L 18025:127.0.0.1:8025 deploy@2.31.42.230
 ```
 
 View the inbox at **http://127.0.0.1:18025**. This local port avoids a conflict with
@@ -181,7 +203,7 @@ update profile → logout → reset password → login again. Restart the API an
 account persistence. Optionally run the scripted check on the server:
 
 ```bash
-python3 deploy/development/smoke.py https://copilot-dev.example.com
+python3 deploy/development/smoke.py https://scientific-dataset-copilot.duckdns.org
 ```
 
 This prompts for the gate password, verifies the real TLS certificate, exercises
