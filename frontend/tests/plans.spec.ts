@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 test.skip(!process.env.SDC_ACCOUNT_E2E, 'Plan journey requires PostgreSQL and Mailpit');
+test.use({ actionTimeout: 10000 });
 const password = 'A plan browser testing passphrase!';
 const headers = { Origin: 'http://127.0.0.1:5173', 'X-SDC-Request': '1' };
 
@@ -51,7 +52,7 @@ test('admin manages plans and defaults; members see their own allowance', async 
     const main = page.getByRole('main');
     await expect(main.getByRole('heading', { name: 'Plan administration', exact: true })).toBeVisible();
     await main.getByRole('button', { name: 'Create plan', exact: true }).click();
-    await main.getByLabel('Plan name', { exact: true }).fill(planName);
+    await main.getByRole('textbox', { name: 'Plan name', exact: true }).fill(planName);
     await main.getByLabel('Description', { exact: true }).fill('Browser-tested research allowance.');
     await main.getByLabel('Analyses per month').fill('3');
     await main.getByLabel('Simultaneous analyses').fill('2');

@@ -47,6 +47,7 @@ def reset_plans():
         db.execute(delete(Plan).where(Plan.id != DEFAULT_ID))
         plan = db.get(Plan, DEFAULT_ID)
         plan.name = "Development"
+        plan.description = "Free access for development and testing."
         plan.active = True
         plan.monthly_analyses = 20
         plan.concurrent_analyses = 1
