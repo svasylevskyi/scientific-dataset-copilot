@@ -159,6 +159,8 @@ session semantics and deployment boundaries.
 A separate Ubuntu/Hetzner setup is available with a compiled frontend, HTTPS,
 a tester password gate, private PostgreSQL/SMTP and Mailpit through an SSH tunnel.
 Follow [the development deployment guide](docs/development-deployment.md).
+For manual deployments from GitHub Actions, complete the one-time
+[GitHub deployment setup](docs/github-deployment.md), then use **Deploy development → Run workflow**.
 It runs Docker Engine on the server; your Windows PC does not need Docker Desktop.
 Use `deploy/development/compose.sh` for this environment; the root `compose.yaml`
 continues to serve local development.
