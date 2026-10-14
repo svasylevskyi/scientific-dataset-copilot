@@ -189,6 +189,8 @@ jobs:
         run: |
           for script in deploy/development/*.sh; do bash -n "$script"; done
           python3 -m py_compile deploy/development/configure.py deploy/development/smoke.py
+      - name: Check deployment command restrictions and locking
+        run: python3 -m unittest discover -s deploy/development/tests -v
       - name: Configure and deploy disposable development stack
         run: |
           printf '%s\n%s\n' 'CI-only tester gate password!' 'CI-only tester gate password!' | python3 deploy/development/configure.py localhost

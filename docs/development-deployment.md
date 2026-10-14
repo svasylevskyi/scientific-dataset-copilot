@@ -236,7 +236,10 @@ bash deploy/development/compose.sh exec api python -m app.accounts.cli promote Y
 
 ## 6. Updates, recovery and operational boundaries
 
-Deploy reviewed commits from `main` manually for this first environment:
+The [manual GitHub deployment workflow](github-deployment.md) provides a run
+button after one-time SSH/environment setup. It checks CI and deploys an exact
+`main` commit using the same backup and migration steps below. Direct operator
+deployment remains available (do not update Git while an Actions deployment runs):
 
 ```bash
 git pull --ff-only && bash deploy/development/deploy.sh
@@ -298,8 +301,8 @@ outbound relay is configured. Messages expire after seven days or when the
 
 This provides development deployment, not the commercial launch gate. Production
 requires its own host/data/secrets, real SMTP, off-server backup/restore acceptance,
-monitoring and the remaining product/billing/privacy milestones. Automated GitHub
-release deployment can follow once this first server deployment is accepted.
+monitoring and the remaining product/billing/privacy milestones. The manual GitHub
+workflow targets only this development environment.
 
 Sources: [Hetzner server creation](https://docs.hetzner.com/cloud/servers/getting-started/creating-a-server/),
 [Hetzner firewall](https://docs.hetzner.com/cloud/firewalls/getting-started/creating-a-firewall/),

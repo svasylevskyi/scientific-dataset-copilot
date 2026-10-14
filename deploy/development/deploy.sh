@@ -3,7 +3,11 @@
 set -euo pipefail
 repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
-exec 9>"$repo_root/.development-deploy.lock"
+# The installed SSH entry point can pass the lock it held during the Git update.
+# Reuse only a descriptor for this exact lock file; direct invocations open it.
+if [[ ! /proc/$$/fd/9 -ef "$repo_root/.development-deploy.lock" ]]; then
+  exec 9>"$repo_root/.development-deploy.lock"
+fi
 flock -n 9 || { echo 'A development deployment is already running.' >&2; exit 1; }
 export SDC_SOURCE_REVISION="$(git rev-parse HEAD)"
 compose=(bash deploy/development/compose.sh)
