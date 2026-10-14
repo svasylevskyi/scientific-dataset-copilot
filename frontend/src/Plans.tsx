@@ -4,7 +4,7 @@ import {
   DialogContentText, DialogTitle, LinearProgress, MenuItem, Paper, Stack, TextField, Typography,
 } from '@mui/material';
 import { useAccount } from './Account';
-import { request, type AdminPlan, type Plan, type PlanInput, type Usage, type Message } from './api';
+import { request, type AdminPlan, type Plan, type PlanInput, type Usage, type Message, type PlanningCosts } from './api';
 
 const errorText = (error: unknown) => error instanceof Error ? error.message : 'Please try again.';
 const dateText = (date: string) => new Date(date).toLocaleDateString('en-GB', { timeZone: 'UTC' });
@@ -165,6 +165,7 @@ function PlanAdministration() {
   return <>
     <Typography variant="h4" component="h1" fontWeight={650}>Plan administration</Typography>
     <Typography color="text.secondary" sx={{ mt: 1, mb: 3 }}>Manage free plans, registration defaults and account allowances.</Typography>
+    <PlanningUsage />
     {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
     {message && <Alert severity="success" sx={{ mb: 2 }}>{message}</Alert>}
     <Stack direction="row" gap={1} sx={{ mb: 2 }}>
@@ -211,4 +212,27 @@ function PlanAdministration() {
       <DialogActions><Button disabled={busy} onClick={() => setConfirmation(null)}>Cancel</Button><Button disabled={busy} onClick={confirm}>{busy ? 'Saving…' : 'Confirm'}</Button></DialogActions>
     </Dialog>
   </>;
+}
+
+function PlanningUsage() {
+  const [data, setData] = useState<PlanningCosts | null>(null);
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+  const load = useCallback(async () => {
+    setBusy(true); setError('');
+    try { setData(await request<PlanningCosts>('admin/copilot/usage')); }
+    catch (e) { setError(errorText(e)); }
+    finally { setBusy(false); }
+  }, []);
+  useEffect(() => { void load(); }, [load]);
+  return <Paper className="panel" component="section" aria-label="Planning usage">
+    <Typography variant="h6" component="h2">AI planning usage</Typography>
+    {error && <Alert severity="error">{error}</Alert>}
+    {data && <>
+      <Typography>{data.day} UTC · {data.requests} requests · Estimated cost ${Number(data.estimated_cost_usd).toFixed(6)}</Typography>
+      <Typography>Budget used or reserved: ${Number(data.budget_used_usd).toFixed(4)} of ${Number(data.daily_budget_usd).toFixed(2)} · {data.unresolved_requests} requests with pending or unknown provider usage.</Typography>
+      <Typography variant="body2" color="text.secondary">{data.model}. Estimates use reported tokens and recorded pricing, not invoices. Unknown usage keeps a conservative reservation. Limits are configured on the API server; analysis allowances are separate.</Typography>
+    </>}
+    <Button onClick={load} disabled={busy}>Refresh planning usage</Button>
+  </Paper>;
 }

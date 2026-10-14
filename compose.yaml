@@ -40,6 +40,10 @@ services:
       SDC_DATABASE_URL: postgresql+psycopg://sdc:sdc_local@db:5432/sdc
       SDC_PUBLIC_URL: http://127.0.0.1:5173
       SDC_SMTP_HOST: mailpit
+      SDC_COPILOT_ENABLED: ${SDC_COPILOT_ENABLED:-false}
+      SDC_OPENAI_API_KEY: ${SDC_OPENAI_API_KEY:-}
+      SDC_COPILOT_DAILY_REQUESTS: ${SDC_COPILOT_DAILY_REQUESTS:-20}
+      SDC_COPILOT_DAILY_BUDGET_USD: ${SDC_COPILOT_DAILY_BUDGET_USD:-2.00}
       SDC_ARTIFACT_DIR: /app/artifacts/runs
     volumes:
       - analysis-artifacts:/app/artifacts:ro

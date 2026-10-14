@@ -8,8 +8,8 @@ query plans against its metadata snapshot. It never runs scientific work from an
 HTTP request. The explicit CLI downloads and processes bounded source subsets.
 
 The query planner, connector, and scientific calculation are separate modules with
-Pydantic contracts. Frontend types are generated from OpenAPI. Billing and AI remain
-roadmap capabilities; accounts and persistence were added in increment 2, and
+Pydantic contracts. Frontend types are generated from OpenAPI. Billing and AI result
+interpretation remain roadmap capabilities; accounts and persistence were added in increment 2, and
 plans/usage accounting in increment 3.
 
 ## Implemented in increment 2
@@ -59,6 +59,13 @@ universal scientific ontology. Introduce a small shared envelope when a second
 real data shape demonstrates the need.
 
 ## AI boundary
+
+Guided planning now implements this boundary with a separate `copilot` module:
+owner-scoped, idempotent planning records; one bounded structured-output call;
+application-built proposals; daily request/budget admission; and estimated provider
+cost settlement. Saving a reviewed proposal creates a normal saved analysis, never
+a run. Existing execution remains the sole scientific/allowance path. See
+[guided planning](guided-planning.md) for configuration and evaluation.
 
 AI proposes structured intent, selects among eligible registered capabilities,
 asks clarifying questions, and explains computed outputs. Application code validates

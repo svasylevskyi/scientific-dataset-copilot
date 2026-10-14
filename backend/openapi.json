@@ -889,6 +889,194 @@
         "title": "PlanView",
         "type": "object"
       },
+      "PlannerStatus": {
+        "properties": {
+          "blocked_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocked Reason"
+          },
+          "daily_limit": {
+            "title": "Daily Limit",
+            "type": "integer"
+          },
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "remaining": {
+            "title": "Remaining",
+            "type": "integer"
+          },
+          "resets_at": {
+            "format": "date-time",
+            "title": "Resets At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "enabled",
+          "daily_limit",
+          "remaining",
+          "resets_at",
+          "blocked_reason"
+        ],
+        "title": "PlannerStatus",
+        "type": "object"
+      },
+      "PlanningCosts": {
+        "properties": {
+          "budget_used_usd": {
+            "title": "Budget Used Usd",
+            "type": "string"
+          },
+          "daily_budget_usd": {
+            "title": "Daily Budget Usd",
+            "type": "string"
+          },
+          "day": {
+            "format": "date",
+            "title": "Day",
+            "type": "string"
+          },
+          "estimated_cost_usd": {
+            "title": "Estimated Cost Usd",
+            "type": "string"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "requests": {
+            "title": "Requests",
+            "type": "integer"
+          },
+          "unresolved_requests": {
+            "title": "Unresolved Requests",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "day",
+          "model",
+          "requests",
+          "estimated_cost_usd",
+          "unresolved_requests",
+          "budget_used_usd",
+          "daily_budget_usd"
+        ],
+        "title": "PlanningCosts",
+        "type": "object"
+      },
+      "PlanningInput": {
+        "additionalProperties": false,
+        "properties": {
+          "parent_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Id"
+          },
+          "prompt": {
+            "maxLength": 2000,
+            "minLength": 3,
+            "title": "Prompt",
+            "type": "string"
+          },
+          "request_key": {
+            "format": "uuid",
+            "title": "Request Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "request_key",
+          "prompt"
+        ],
+        "title": "PlanningInput",
+        "type": "object"
+      },
+      "PlanningView": {
+        "properties": {
+          "analysis_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Analysis Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "prompt": {
+            "title": "Prompt",
+            "type": "string"
+          },
+          "proposal": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Proposal"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "ready",
+              "clarification",
+              "unsupported",
+              "failed"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "turn": {
+            "title": "Turn",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "message",
+          "prompt",
+          "turn",
+          "created_at"
+        ],
+        "title": "PlanningView",
+        "type": "object"
+      },
       "ProfileInput": {
         "additionalProperties": false,
         "properties": {
@@ -903,6 +1091,54 @@
           "name"
         ],
         "title": "ProfileInput",
+        "type": "object"
+      },
+      "Proposal": {
+        "properties": {
+          "allowance_required": {
+            "default": 1,
+            "title": "Allowance Required",
+            "type": "integer"
+          },
+          "analysis": {
+            "$ref": "#/components/schemas/AnalysisInput"
+          },
+          "blocked_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocked Reason"
+          },
+          "can_run": {
+            "title": "Can Run",
+            "type": "boolean"
+          },
+          "method": {
+            "default": "Area-weighted daily regional means, averaged into monthly means.",
+            "title": "Method",
+            "type": "string"
+          },
+          "plan": {
+            "$ref": "#/components/schemas/QueryPlan"
+          },
+          "retention_days": {
+            "title": "Retention Days",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "analysis",
+          "plan",
+          "retention_days",
+          "can_run",
+          "blocked_reason"
+        ],
+        "title": "Proposal",
         "type": "object"
       },
       "QueryChunk": {
@@ -1963,6 +2199,27 @@
         ]
       }
     },
+    "/api/v1/admin/copilot/usage": {
+      "get": {
+        "operationId": "cost_summary_api_v1_admin_copilot_usage_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanningCosts"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Cost Summary",
+        "tags": [
+          "Copilot"
+        ]
+      }
+    },
     "/api/v1/admin/plan-assignments": {
       "post": {
         "operationId": "assign_plan_api_v1_admin_plan_assignments_post",
@@ -2786,6 +3043,205 @@
           }
         },
         "summary": "Catalog"
+      }
+    },
+    "/api/v1/copilot/preview": {
+      "post": {
+        "operationId": "preview_api_v1_copilot_preview_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalysisInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Preview",
+        "tags": [
+          "Copilot"
+        ]
+      }
+    },
+    "/api/v1/copilot/requests": {
+      "post": {
+        "operationId": "plan_api_v1_copilot_requests_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanningInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanningView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Plan",
+        "tags": [
+          "Copilot"
+        ]
+      }
+    },
+    "/api/v1/copilot/requests/{key}": {
+      "get": {
+        "operationId": "get_plan_api_v1_copilot_requests__key__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Key",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanningView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Plan",
+        "tags": [
+          "Copilot"
+        ]
+      }
+    },
+    "/api/v1/copilot/requests/{key}/accept": {
+      "post": {
+        "operationId": "accept_api_v1_copilot_requests__key__accept_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "key",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Key",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalysisInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Accept",
+        "tags": [
+          "Copilot"
+        ]
+      }
+    },
+    "/api/v1/copilot/status": {
+      "get": {
+        "operationId": "planner_status_api_v1_copilot_status_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannerStatus"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Planner Status",
+        "tags": [
+          "Copilot"
+        ]
       }
     },
     "/api/v1/health": {

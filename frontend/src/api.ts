@@ -15,18 +15,22 @@ export type SavedAnalysis = components['schemas']['AnalysisView'];
 export type AnalysisInput = components['schemas']['AnalysisInput'];
 export type AnalysisRun = components['schemas']['RunView'];
 export type RunDetail = components['schemas']['RunDetail'];
+export type PlannerStatus = components['schemas']['PlannerStatus'];
+export type PlanningView = components['schemas']['PlanningView'];
+export type Proposal = components['schemas']['Proposal'];
+export type PlanningCosts = components['schemas']['PlanningCosts'];
 
 export class ApiError extends Error {
   constructor(message: string, public status: number) { super(message); }
 }
 
-export async function request<T>(path: string, body?: unknown, method?: string): Promise<T> {
+export async function request<T>(path: string, body?: unknown, method?: string, timeout = 20000): Promise<T> {
   const response = await fetch(`/api/v1/${path}`, {
     method: method ?? (body !== undefined ? 'POST' : 'GET'),
     credentials: 'same-origin',
     headers: body !== undefined ? { 'Content-Type': 'application/json', 'X-SDC-Request': '1' } : undefined,
     body: body !== undefined ? JSON.stringify(body) : undefined,
-    signal: AbortSignal.timeout(20000),
+    signal: AbortSignal.timeout(timeout),
   });
   if (!response.ok) {
     // The development Basic-auth gateway transports app 401s as marked 403s

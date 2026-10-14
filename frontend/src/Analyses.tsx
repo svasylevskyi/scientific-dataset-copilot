@@ -4,6 +4,7 @@ import {
   DialogContentText, DialogTitle, MenuItem, Paper, Stack, TextField, Typography,
 } from '@mui/material';
 import { useAccount, useRoute } from './Account';
+import { Copilot } from './Copilot';
 import { request, type Analysis, type AnalysisInput, type AnalysisRun, type RunDetail, type SavedAnalysis, type Usage } from './api';
 
 const Chart = lazy(() => import('./Chart'));
@@ -55,6 +56,7 @@ function Editor({ analysis, onSave, onClose }: { analysis: SavedAnalysis | null;
 }
 
 function AnalysisWorkspace() {
+  const { user } = useAccount();
   const { hash } = useRoute();
   const params = new URLSearchParams(hash.split('?')[1]);
   const selectedId = params.get('id'); const runId = params.get('run');
@@ -96,6 +98,9 @@ function AnalysisWorkspace() {
     {usage && <Alert severity={usage.blocked_reason ? 'warning' : 'info'} sx={{ mb: 3 }} action={<Button color="inherit" href="#/usage">Usage</Button>}>
       {usage.remaining} analyses remaining this month · {usage.concurrent_reserved}/{usage.plan.concurrent_analyses} simultaneous slots reserved. {usage.blocked_reason ?? `New results are kept for ${usage.plan.retention_days} days.`}
     </Alert>}
+    <Copilot userId={user!.id} onManual={() => setEditor(null)} onSaved={async value => {
+      setEditor(undefined); await load(); window.location.hash = href(value.id).slice(1); setRevision(r => r + 1);
+    }} />
     {editor !== undefined && <Editor key={editor?.id ?? 'new'} analysis={editor} onClose={() => setEditor(undefined)} onSave={async value => {
       setEditor(undefined); await load(); window.location.hash = href(value.id).slice(1); setRevision(r => r + 1);
     }} />}
