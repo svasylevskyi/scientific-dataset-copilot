@@ -39,8 +39,8 @@ disables new paid planning calls without disabling the manual workflow.
 
 For native local development put the same variables in the repository's `.env`
 and restart the API. Local Docker Compose reads these variables from `.env` too.
-Use a separate key/project from Research Radar. Do not paste API keys into chat or
-commit them. This integration uses the API account's billing, not a ChatGPT plan.
+Use a dedicated development key/project. Do not paste API keys into chat or commit
+them. This integration uses the API account's billing, not a ChatGPT plan.
 
 ## Try it
 

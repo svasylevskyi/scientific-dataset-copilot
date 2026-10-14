@@ -272,6 +272,9 @@ def finish(db: Session, key: UUID, result: provider.ProviderResult):
             state, message, proposal = interpret(db, row.workspace_id, result.intent)
         except HTTPException:
             pass  # Access may have changed during the provider call; preserve its cost.
+    # Failed/clarification outcomes also serialize with admission before taking
+    # the budget lock, including recovery of a request whose response arrived late.
+    membership(db, row.workspace_id)
     budget_lock(db)
     row = db.scalar(
         select(PlanningRequest)

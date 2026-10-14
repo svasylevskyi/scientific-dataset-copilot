@@ -89,7 +89,13 @@ services:
       SDC_COPILOT_DAILY_REQUESTS: ${SDC_COPILOT_DAILY_REQUESTS:-20}
       SDC_COPILOT_DAILY_BUDGET_USD: ${SDC_COPILOT_DAILY_BUDGET_USD:-2.00}
     volumes:
-      - analysis-artifacts:/app/artifacts:ro
+      # Only the worker initializes this shared volume on first deployment.
+      - type: volume
+        source: analysis-artifacts
+        target: /app/artifacts
+        read_only: true
+        volume:
+          nocopy: true
     # Only Caddy's fixed private address is trusted to supply client IPs.
     command:
       - python

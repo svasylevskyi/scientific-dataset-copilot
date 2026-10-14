@@ -167,7 +167,7 @@ def test_failures_keep_unknown_cost_reservation_without_consuming_analysis(plann
 
 
 def test_owner_isolation_csrf_and_disabled_manual_fallback(planner, monkeypatch):
-    client, sent, _, calls = planner
+    client, sent, owner_account, calls = planner
     result = ask(client).json()
     body = result["proposal"]["analysis"]
     with TestClient(app, headers=HEADERS) as other:
@@ -187,6 +187,12 @@ def test_owner_isolation_csrf_and_disabled_manual_fallback(planner, monkeypatch)
     with TestClient(app, headers=HEADERS) as anonymous:
         assert anonymous.get("/api/v1/copilot/status").status_code == 401
         assert ask(anonymous).status_code == 401
+    with Session(engine()) as db, db.begin():
+        db.get(WorkspacePlan, UUID(owner_account["workspace"]["id"])).status = "suspended"
+    assert ask(client).status_code == 403
+    assert post(client, f"copilot/requests/{result['id']}/accept", body).status_code == 403
+    with Session(engine()) as db, db.begin():
+        db.get(WorkspacePlan, UUID(owner_account["workspace"]["id"])).status = "active"
     monkeypatch.setenv("SDC_COPILOT_ENABLED", "false")
     assert client.get("/api/v1/copilot/status").json()["enabled"] is False
     assert ask(client).status_code == 503
@@ -277,6 +283,20 @@ def test_duplicate_and_pending_requests_cannot_dispatch_twice_and_orphans_stay_c
         assert row.status == "failed" and outbound is None
         assert row.estimated_cost_usd is None
         assert service.costs(db, config()).budget_used_usd > 0
+    with Session(engine()) as db, db.begin():
+        service.finish(
+            db,
+            body.request_key,
+            provider.ProviderResult(
+                Intent.model_validate(VALID),
+                input_tokens=1000,
+                cached_tokens=200,
+                output_tokens=100,
+            ),
+        )
+        row = db.get(PlanningRequest, body.request_key)
+        assert row.status == "failed" and row.proposal is None
+        assert row.estimated_cost_usd == Decimal("0.001065")
 
 
 def test_application_validation_rejects_unrunnable_intents(planner):

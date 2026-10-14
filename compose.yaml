@@ -46,7 +46,13 @@ services:
       SDC_COPILOT_DAILY_BUDGET_USD: ${SDC_COPILOT_DAILY_BUDGET_USD:-2.00}
       SDC_ARTIFACT_DIR: /app/artifacts/runs
     volumes:
-      - analysis-artifacts:/app/artifacts:ro
+      # Only the worker initializes this shared volume on first deployment.
+      - type: volume
+        source: analysis-artifacts
+        target: /app/artifacts
+        read_only: true
+        volume:
+          nocopy: true
     ports:
       - "127.0.0.1:8000:8000"
     depends_on:
