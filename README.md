@@ -156,6 +156,12 @@ session semantics and deployment boundaries.
 
 ## Hosted development environment
 
+**Guided planning:** describe an SST request in **Your analyses**, clarify missing
+details, review/edit the validated proposal, and save it before explicitly starting
+a run. Optional OpenAI configuration, independent planning limits/costs, and live
+evaluation instructions are in [guided planning](docs/guided-planning.md).
+The manual form remains available without an AI key.
+
 A separate Ubuntu/Hetzner setup is available with a compiled frontend, HTTPS,
 a tester password gate, private PostgreSQL/SMTP and Mailpit through an SSH tunnel.
 Follow [the development deployment guide](docs/development-deployment.md).

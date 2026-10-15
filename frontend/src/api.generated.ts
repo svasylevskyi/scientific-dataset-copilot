@@ -123,6 +123,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/copilot/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Cost Summary */
+        get: operations["cost_summary_api_v1_admin_copilot_usage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/plan-assignments": {
         parameters: {
             query?: never;
@@ -441,6 +458,91 @@ export interface paths {
         };
         /** Catalog */
         get: operations["catalog_api_v1_catalog_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/copilot/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview */
+        post: operations["preview_api_v1_copilot_preview_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/copilot/requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Plan */
+        post: operations["plan_api_v1_copilot_requests_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/copilot/requests/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Plan */
+        get: operations["get_plan_api_v1_copilot_requests__key__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/copilot/requests/{key}/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Accept */
+        post: operations["accept_api_v1_copilot_requests__key__accept_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/copilot/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Planner Status */
+        get: operations["planner_status_api_v1_copilot_status_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1045,10 +1147,106 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** PlannerStatus */
+        PlannerStatus: {
+            /** Blocked Reason */
+            blocked_reason: string | null;
+            /** Daily Limit */
+            daily_limit: number;
+            /** Enabled */
+            enabled: boolean;
+            /** Remaining */
+            remaining: number;
+            /**
+             * Resets At
+             * Format: date-time
+             */
+            resets_at: string;
+        };
+        /** PlanningCosts */
+        PlanningCosts: {
+            /** Budget Used Usd */
+            budget_used_usd: string;
+            /** Daily Budget Usd */
+            daily_budget_usd: string;
+            /**
+             * Day
+             * Format: date
+             */
+            day: string;
+            /** Estimated Cost Usd */
+            estimated_cost_usd: string;
+            /** Model */
+            model: string;
+            /** Requests */
+            requests: number;
+            /** Unresolved Requests */
+            unresolved_requests: number;
+        };
+        /** PlanningInput */
+        PlanningInput: {
+            /** Parent Id */
+            parent_id?: string | null;
+            /** Prompt */
+            prompt: string;
+            /**
+             * Request Key
+             * Format: uuid
+             */
+            request_key: string;
+        };
+        /** PlanningView */
+        PlanningView: {
+            /** Analysis Id */
+            analysis_id?: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Message */
+            message: string;
+            /** Prompt */
+            prompt: string;
+            proposal?: components["schemas"]["Proposal"] | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "pending" | "ready" | "clarification" | "unsupported" | "failed";
+            /** Turn */
+            turn: number;
+        };
         /** ProfileInput */
         ProfileInput: {
             /** Name */
             name: string;
+        };
+        /** Proposal */
+        Proposal: {
+            /**
+             * Allowance Required
+             * @default 1
+             */
+            allowance_required: number;
+            analysis: components["schemas"]["AnalysisInput"];
+            /** Blocked Reason */
+            blocked_reason: string | null;
+            /** Can Run */
+            can_run: boolean;
+            /**
+             * Method
+             * @default Area-weighted daily regional means, averaged into monthly means.
+             */
+            method: string;
+            plan: components["schemas"]["QueryPlan"];
+            /** Retention Days */
+            retention_days: number;
         };
         /** QueryChunk */
         QueryChunk: {
@@ -1584,6 +1782,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UsageView"];
+                };
+            };
+        };
+    };
+    cost_summary_api_v1_admin_copilot_usage_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanningCosts"];
                 };
             };
         };
@@ -2227,6 +2445,158 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    preview_api_v1_copilot_preview_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AnalysisInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Proposal"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    plan_api_v1_copilot_requests_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PlanningInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanningView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_plan_api_v1_copilot_requests__key__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlanningView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    accept_api_v1_copilot_requests__key__accept_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AnalysisInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnalysisView"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    planner_status_api_v1_copilot_status_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PlannerStatus"];
                 };
             };
         };

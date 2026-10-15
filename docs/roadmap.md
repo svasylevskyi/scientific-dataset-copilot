@@ -29,8 +29,12 @@ Stripe checkout in increment 6; all currently assignable plans are free.
 Increment 4 implements saved analyses, immutable run inputs, a PostgreSQL-backed
 worker with leases/fencing and bounded retries, private exports and artifact
 retention. Quota admission, job persistence and terminal settlement are atomic.
-See [durable analyses](durable-analyses.md). Increment 5 (copilot workflow) is next
-after live-source testing and acceptance.
+See [durable analyses](durable-analyses.md). Increment 5a now adds guided natural-language
+planning, bounded clarification, editable validated proposals, separate AI limits
+and cost accounting, and explicit save/run confirmation. See
+[guided planning](guided-planning.md); live model evaluation requires a configured key.
+Increment 5b is grounded result explanation and shareable outputs, followed by
+self-service billing, customer onboarding, production operations and a small paid pilot.
 
 ### Later increments
 

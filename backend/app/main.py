@@ -13,6 +13,9 @@ from app.accounts.routes import Db
 from app.accounts.routes import router as accounts_router
 from app.analyses.models import AnalysisRun
 from app.analyses.routes import router as analyses_router
+from app.copilot.config import config as copilot_config
+from app.copilot.models import PlanningRequest
+from app.copilot.routes import router as copilot_router
 from app.plans.models import PlanSettings
 from app.plans.routes import router as plans_router
 from app.sst.contracts import REGIONS, AnalysisRequest, AnalysisResult, QueryPlan
@@ -23,6 +26,7 @@ app = FastAPI(title="Scientific Dataset Copilot", version="0.2.0")
 app.include_router(accounts_router)
 app.include_router(plans_router)
 app.include_router(analyses_router)
+app.include_router(copilot_router)
 
 
 @app.exception_handler(OperationalError)
@@ -44,6 +48,7 @@ async def account_headers(request, call_next):
             "/api/v1/admin",
             "/api/v1/analyses",
             "/api/v1/runs",
+            "/api/v1/copilot",
         )
     ):
         response.headers["Cache-Control"] = "no-store"
@@ -64,8 +69,10 @@ def health() -> dict[str, str]:
 
 @app.get("/api/v1/ready")
 def ready(db: Db):
+    copilot_config()  # Fail deployment health checks for invalid operator-supplied limits.
     db.execute(select(User.id).limit(1))
     db.execute(select(AnalysisRun.id).limit(1))
+    db.execute(select(PlanningRequest.id).limit(1))
     if db.get(PlanSettings, 1) is None:
         raise HTTPException(503, "Plan configuration is unavailable.")
     return {"status": "ready"}
@@ -82,7 +89,7 @@ def catalog():
             "query_preview": True,
             "reference_chart": True,
             "live_web_execution": True,
-            "natural_language": False,
+            "natural_language": copilot_config().enabled,
             "accounts": True,
             "subscriptions": False,
             "plans_and_usage": True,

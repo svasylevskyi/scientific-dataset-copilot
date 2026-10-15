@@ -123,6 +123,7 @@ jobs:
       SDC_DATABASE_URL: postgresql+psycopg://sdc:sdc_test@127.0.0.1:5432/sdc_test
       SDC_TEST_DATABASE_URL: postgresql+psycopg://sdc:sdc_test@127.0.0.1:5432/sdc_test
       SDC_ACCOUNT_E2E: '1'
+      SDC_COPILOT_E2E: '1'
       SDC_ARTIFACT_DIR: ${{ github.workspace }}/artifacts/runs
       SDC_PUBLIC_URL: http://127.0.0.1:5173
     steps:
@@ -165,7 +166,7 @@ jobs:
         working-directory: frontend
         env:
           PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/sdc-playwright
-        run: npm run test:e2e -- accounts.spec.ts plans.spec.ts analyses.spec.ts
+        run: npm run test:e2e -- accounts.spec.ts plans.spec.ts analyses.spec.ts copilot.spec.ts
       - name: Upload account browser evidence
         if: always()
         uses: actions/upload-artifact@v4
